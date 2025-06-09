@@ -1,7 +1,7 @@
 ﻿using System.Web;
 using System.Web.Optimization;
 
-namespace FillingWordTemplate2019
+namespace WordDocumentCompleting2019
 {
     public class BundleConfig
     {

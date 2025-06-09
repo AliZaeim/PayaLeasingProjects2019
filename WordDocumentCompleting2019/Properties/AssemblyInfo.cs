@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("FillingWordTemplate2019")]
+[assembly: AssemblyTitle("WordDocumentCompleting2019")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("FillingWordTemplate2019")]
+[assembly: AssemblyProduct("WordDocumentCompleting2019")]
 [assembly: AssemblyCopyright("Copyright ©  2025")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("a7b16629-df57-4bbe-8b37-d9a538159bc1")]
+[assembly: Guid("5a0651a1-74da-4718-b8a6-739ff82b6661")]
 
 // Version information for an assembly consists of the following four values:
 //

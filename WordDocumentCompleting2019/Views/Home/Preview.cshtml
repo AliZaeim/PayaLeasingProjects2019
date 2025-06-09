@@ -1,0 +1,28 @@
+﻿@{
+    ViewBag.Title = "Document Preview";
+}
+
+<h2>Preview Your Information</h2>
+
+<div class="preview-container">
+    @Html.Raw(ViewBag.PreviewContent)
+</div>
+
+<div class="actions">
+    <a href="@Url.Action("Index")" class="btn btn-default">Edit Information</a>
+    <a href="@Url.Action("Download")" class="btn btn-success">Download Document</a>
+</div>
+
+<style>
+    .preview-container {
+        border: 1px solid #ddd;
+        padding: 20px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+    }
+
+    .actions {
+        margin-top: 20px;
+    }
+</style>
