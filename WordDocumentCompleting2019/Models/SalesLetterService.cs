@@ -60,59 +60,7 @@ namespace WordDocumentCompleting2019.Models
                         new DicModel(){ Key = "OrderDate", Value=data.OrderDate },
                     };
 
-                    var Res = ReplaceWordPlaceHolder(body, PlaceValueDic);
-                    int x = 100;
-                    //keyValuePairs.Add("Sellername", ReplacePlaceholder(body, "SellerName", data.SellerName));
-                    //keyValuePairs.Add("Farzand", ReplacePlaceholder(body, "Farzand", data.SRelated));
-                    //keyValuePairs.Add("Tavalod", ReplacePlaceholder(body, "Tavalod", data.SStartDate));
-
-                    //keyValuePairs.Add("Sabt", ReplacePlaceholder(body, "Sabt", data.SellerId));
-                    //keyValuePairs.Add("Sadereh", ReplacePlaceholder(body, "Sadereh", data.SSadereh));
-                    //keyValuePairs.Add("NC", ReplacePlaceholder(body, "NC", data.SNC));
-
-                    //keyValuePairs.Add("Neshani", ReplacePlaceholder(body, "Neshani", data.SAddress));
-                    //keyValuePairs.Add("EcoNo", ReplacePlaceholder(body, "EcoNo", data.SEcoNo));
-
-                    //keyValuePairs.Add("Telephone", ReplacePlaceholder(body, "Telephone", data.SPhone));
-                    //keyValuePairs.Add("Cellphone", ReplacePlaceholder(body, "Cellphone", data.SCellphone));
-                    //keyValuePairs.Add("PostalCode", ReplacePlaceholder(body, "PostalCode", data.SPostalCode));
-
-                    //keyValuePairs.Add("BuyerName", ReplacePlaceholder(body, "BuyerName", data.BuyerName));
-                    //keyValuePairs.Add("CType", ReplacePlaceholder(body, "CType", data.BRelated));
-                    //keyValuePairs.Add("Tasis", ReplacePlaceholder(body, "Tasis", data.BStartDate));
-
-                    //keyValuePairs.Add("BuyerId", ReplacePlaceholder(body, "BuyerId", data.BuyerId));
-                    //keyValuePairs.Add("Mahalsabt", ReplacePlaceholder(body, "Mahalsabt", data.BSadereh));
-                    //keyValuePairs.Add("Shmelli", ReplacePlaceholder(body, "Shmelli", data.BNC));
-
-                    //keyValuePairs.Add("BAddress", ReplacePlaceholder(body, "BAddress", data.BAddress));
-                    //keyValuePairs.Add("Sheco", ReplacePlaceholder(body, "Sheco", data.BEcoNo));
-
-                    //keyValuePairs.Add("BPhone", ReplacePlaceholder(body, "BPhone", data.BPhone));
-                    //keyValuePairs.Add("THamrah", ReplacePlaceholder(body, "THamrah", data.BCellphone));
-                    //keyValuePairs.Add("CodePosti", ReplacePlaceholder(body, "CodePosti", data.BPostalCode));
-
-                    //keyValuePairs.Add("Dastgah", ReplacePlaceholder(body, "Dastgah", data.Dastgah));
-                    //keyValuePairs.Add("Tip", ReplacePlaceholder(body, "Tip", data.Tip));
-                    //keyValuePairs.Add("Model", ReplacePlaceholder(body, "Model", data.MModel));
-                    //keyValuePairs.Add("Color", ReplacePlaceholder(body, "Color", data.Color));
-                    //keyValuePairs.Add("EngineNomber", ReplacePlaceholder(body, "EngineNomber", data.EngineNomber));
-                    //keyValuePairs.Add("RahnamiyRenendegiNO", ReplacePlaceholder(body, "RahnamiyRanandegiNO", data.RahnamiyRanandegoNO));
-                    //keyValuePairs.Add("KeDaraye", ReplacePlaceholder(body, "KeDaraye", data.KeDaraye));
-                    //keyValuePairs.Add("OrderNoooooomber", ReplacePlaceholder(body, "OrderNoooooomber", data.OrderNomber));
-                    //keyValuePairs.Add("OrderDate", ReplacePlaceholder(body, "OrderDate", data.OrderDate));
-                    ////====
-                    //keyValuePairs.Add("BahayeMoredMoeameleh", ReplacePlaceholder(body, "BahayeMoredMoeameleh", data.BahayeMoredMoeameleh));
-                    //keyValuePairs.Add("MablaghMoeameleh", ReplacePlaceholder(body, "MablaghMoeameleh", data.MablaghbaghiMandeh));
-                    //keyValuePairs.Add("BeMojebe", ReplacePlaceholder(body, "BeMojebe", data.BeMojebe));
-                    //keyValuePairs.Add("MablaghBaghiMandeh", ReplacePlaceholder(body, "MablaghBaghiMandeh", data.MablaghbaghiMandeh));
-                    //keyValuePairs.Add("IRShabaNO", ReplacePlaceholder(body, "IRShabaNO", data.ShabaNO));
-                    //keyValuePairs.Add("FaseleyeRooz", ReplacePlaceholder(body, "FaseleyeRooz", data.FaseleyeRooz));
-                    //keyValuePairs.Add("BeynameDate", ReplacePlaceholder(body, "BeynameDate", data.BeynameDate));
-
-
-
-                    //int c = keyValuePairs.Where(w => w.Value == true).Count();
+                    var Res = ReplaceWordPlaceHolder(body, PlaceValueDic);               
                     doc.Save();
                 }
                 return stream.ToArray();

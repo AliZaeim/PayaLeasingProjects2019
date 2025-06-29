@@ -1,6 +1,7 @@
 ﻿using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
+using Microsoft.Ajax.Utilities;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -42,7 +43,7 @@ namespace WordDocumentCompleting2019.Helpers
                 
 
                 // Replace in footers
-                foreach (var footerPart in doc.MainDocumentPart.FooterParts)
+                foreach (FooterPart footerPart in doc.MainDocumentPart.FooterParts.Where(w => !string.IsNullOrEmpty(w.Footer.InnerText)).ToList())
                     ReplaceInElement(footerPart.Footer, placeholders.Where(w => w.Group == "footer").ToList());
             }
         }
@@ -70,6 +71,7 @@ namespace WordDocumentCompleting2019.Helpers
                 var txts = element.Descendants<Text>().ToList();
                 txts = txts.Where(w => !string.IsNullOrWhiteSpace(w.Text)).ToList();
                 txts = txts.Where(s => s.Text.All(c => (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))).ToList();
+                txts = txts.DistinctBy(d => d.Text).ToList();
                 foreach (var ph in placeholders)
                 {
                     if (txts.Select(s => s.Text).Any(a => a == ph.Key))
