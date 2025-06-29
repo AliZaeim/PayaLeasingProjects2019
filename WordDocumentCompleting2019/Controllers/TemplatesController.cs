@@ -358,56 +358,56 @@ namespace WordDocumentCompleting2019.Controllers
                 #region مشخصات_متقاضی
                     new TemplateModel()
                     {
-                        Key = "CompanyName",
+                        Key = "NameSherekat",
                         Value = "سازه گستر سایپا",
                         Group = "body"
                     },
                     new TemplateModel()
                     {
                         Key = "SabtNo",
-                        Value = "500400",
+                        Value = "500400".ConvertToPersianNumbers(),
                         Group = "body"
                     },
                     new TemplateModel()
                     {
                         Key = "SabtDate",
-                        Value = "1400/02/15",
+                        Value = "1400/02/15".ConvertToPersianNumbers(),
                         Group = "body"
                     },
                     new TemplateModel()
                     {
                         Key = "IdNo",
-                        Value = "874569",
+                        Value = "874569".ConvertToPersianNumbers(),
                         Group = "body"
                     },
                     new TemplateModel()
                     {
                         Key = "EcoCode",
-                        Value = "45878454878",
+                        Value = "45878454878".ConvertToPersianNumbers(),
                         Group = "body"
                     },
                     new TemplateModel()
                     {
                         Key = "PostalCode",
-                        Value = "741477454654",
+                        Value = "741477454654".ConvertToPersianNumbers(),
                         Group = "body"
                     },
                     new TemplateModel()
                     {
-                        Key = "CompAddress",
+                        Key = "CompNeshani",
                         Value = "تهران، جنت آباد شمالی",
-                        Group = ""
+                        Group = "body"
                     },
                     new TemplateModel()
                     {
                         Key = "CompPhone",
-                        Value = "02122541256",
+                        Value = "02122541256".ConvertToPersianNumbers(),
                         Group = "body"
                     },
                     new TemplateModel()
                     {
                         Key = "CompFax",
-                        Value = "0216325214",
+                        Value = "0216325214".ConvertToPersianNumbers(),
                         Group = "body"
                     },
                 #endregion مشخصات_متقاضی
@@ -421,43 +421,43 @@ namespace WordDocumentCompleting2019.Controllers
                 new TemplateModel()
                 {
                     Key = "ZSabtNo",
-                    Value = "200600300",
+                    Value = "200600300".ConvertToPersianNumbers(),
                     Group = "body"
                 },
                 new TemplateModel()
                 {
                     Key = "ZSabtDate",
-                    Value = "1395/07/20",
+                    Value = "1395/07/20".ConvertToPersianNumbers(),
                     Group = "body"
                 },
                 new TemplateModel()
                 {
                     Key = "ZShenase",
-                    Value = "q1234433",
+                    Value = "q1234433".ConvertToPersianNumbers(),
                     Group = "body"
                 },
                 new TemplateModel()
                 {
                     Key = "ZEcoCode",
-                    Value = "100100200",
+                    Value = "100100200".ConvertToPersianNumbers(),
                     Group = "body"
                 },
                 new TemplateModel()
                 {
                     Key = "ZPostalCode",
-                    Value = "100010001000",
+                    Value = "100010001000".ConvertToPersianNumbers(),
                     Group = "body"
                 },
                 new TemplateModel()
                 {
                     Key = "ZAddress",
-                    Value = "تهران، میدان صنعت، خیابان نصرتی، کوچه فندق، پلاک 323",
+                    Value = "تهران، میدان صنعت، خیابان نصرتی، کوچه فندق، پلاک 323".ConvertToPersianNumbers(),
                     Group = "body"
                 },
                 new TemplateModel()
                 {
                     Key = "ZPhone",
-                    Value = "0218745214",
+                    Value = "0218745214".ConvertToPersianNumbers(),
                     Group = "body"
                 },
                 new TemplateModel()
@@ -472,19 +472,19 @@ namespace WordDocumentCompleting2019.Controllers
                     new TemplateModel()
                     {
                         Key = "Tashilat",
-                        Value = "2,000,000,000",
+                        Value = "2,000,000,000".ConvertToPersianNumbers(),
                         Group = "body"
                     },
                     new TemplateModel()
                     {
                         Key = "Bp",
-                        Value = "24",
+                        Value = "24".ConvertToPersianNumbers(),
                         Group = "body"
                     },
                     new TemplateModel()
                     {
                         Key = "Pag",
-                        Value = "3",
+                        Value = "3".ConvertToPersianNumbers(),
                         Group = "body"
                     },
 	            #endregion تسهیلات_مورد_تقاضا
@@ -505,13 +505,13 @@ namespace WordDocumentCompleting2019.Controllers
                     new TemplateModel()
                     {
                         Key = "PazNo",
-                        Value = "404500",
+                        Value = "404500".ConvertToPersianNumbers(),
                         Group = "header"
                     },
                     new TemplateModel()
                     {
                         Key = "TarikhPaz",
-                        Value = "\u202B" + "1404/04/07" + "\u202B",
+                        Value = "1404/04/07".ConvertToPersianNumbers(),
                         Group = "header"
                     },
                 #endregion
@@ -519,43 +519,43 @@ namespace WordDocumentCompleting2019.Controllers
                     new TemplateModel()
                     {
                         Key = "MNKharid",
-                        Value = "560,000,000",
+                        Value = "560,000,000".ConvertToPersianNumbers(),
                         Group = "body"
                     },
                     new TemplateModel()
                     {
                         Key = "Mdaryafti",
-                        Value = "420,000,000",
+                        Value = "420,000,000".ConvertToPersianNumbers(),
                         Group = "body"
                     },
                     new TemplateModel()
                     {
                         Key = "MAFTashilat",
-                        Value = "355,0000,000",
+                        Value = "355,0000,000".ConvertToPersianNumbers(),
                         Group = "body"
                     },
                     new TemplateModel()
                     {
                         Key = "NGharardad",
-                        Value = "25 درصد",
+                        Value = "25".ConvertToPersianNumbers() ,
                         Group = "body"
                     },
                     new TemplateModel()
                     {
                         Key = "TGhest",
-                        Value = "48",
+                        Value = "48".ConvertToPersianNumbers(),
                         Group = "body"
                     },
                     new TemplateModel()
                     {
                         Key = "TFaseleh",
-                        Value = "2",
+                        Value = "2".ConvertToPersianNumbers(),
                         Group = "body"
                     },
                     new TemplateModel()
                     {
                         Key = "TarikhShGh",
-                        Value = "1403/01/01",
+                        Value = "1403/01/01".ConvertToPersianNumbers(),
                         Group = "body"
                     },
 	            #endregion body

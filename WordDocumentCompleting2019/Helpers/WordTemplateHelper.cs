@@ -75,10 +75,7 @@ namespace WordDocumentCompleting2019.Helpers
         private static void ReplaceInElement(OpenXmlElement element, List<TemplateModel> placeholders)
         {    
             if (!string.IsNullOrWhiteSpace(element.InnerText))
-            {
-                var markers = element.Descendants<Text>()
-                    .Where(t => Regex.IsMatch(t.Text, @"\{\{\w+\}\}"))
-                    .ToList();
+            {            
                 var txts = element.Descendants<Text>().ToList();
                 txts = txts.Where(w => !string.IsNullOrWhiteSpace(w.Text)).ToList();
                 txts = txts.Where(s => s.Text.All(c => (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))).ToList();

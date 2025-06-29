@@ -152,13 +152,13 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Controllers\DocumentController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\TemplatesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\ClassAttributesHelper.cs" />
+    <Compile Include="Helpers\PersianNumberHelper.cs" />
     <Compile Include="Helpers\WordTemplateHelper.cs" />
     <Compile Include="Models\SalesLetterModel.cs" />
     <Compile Include="Models\SalesLetterService.cs" />
