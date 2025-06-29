@@ -2,6 +2,7 @@
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.Ajax.Utilities;
+using OpenXmlPowerTools;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -33,8 +34,15 @@ namespace WordDocumentCompleting2019.Helpers
         {
             using (WordprocessingDocument doc = WordprocessingDocument.Open(filePath, true))
             {
+                MarkupSimplifier.SimplifyMarkup(doc, settings: new SimplifyMarkupSettings
+                {
+                    RemoveComments = true,
+                    RemoveContentControls = true,
+                    RemoveEndAndFootNotes = false,
+                    RemoveHyperlinks = true,                     
+                });
                 // Replace in headers
-                foreach (var headerPart in doc.MainDocumentPart.HeaderParts)
+                foreach (var headerPart in doc.MainDocumentPart.HeaderParts.Where(w => !string.IsNullOrEmpty(w.Header.InnerText)).ToList())
                     ReplaceInElement(headerPart.Header, placeholders.Where(w => w.Group == "header").ToList());
 
                 // Replace in main document body
@@ -68,13 +76,16 @@ namespace WordDocumentCompleting2019.Helpers
         {    
             if (!string.IsNullOrWhiteSpace(element.InnerText))
             {
+                var markers = element.Descendants<Text>()
+                    .Where(t => Regex.IsMatch(t.Text, @"\{\{\w+\}\}"))
+                    .ToList();
                 var txts = element.Descendants<Text>().ToList();
                 txts = txts.Where(w => !string.IsNullOrWhiteSpace(w.Text)).ToList();
                 txts = txts.Where(s => s.Text.All(c => (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))).ToList();
                 txts = txts.DistinctBy(d => d.Text).ToList();
                 foreach (var ph in placeholders)
                 {
-                    if (txts.Select(s => s.Text).Any(a => a == ph.Key))
+                    if (txts.Select(s => s.Text.Trim()).ToList().Exists(a => a == ph.Key.Trim()))
                     {
                         Text txt = txts.FirstOrDefault(f => f.Text.Trim().Equals(ph.Key.Trim()));
                         txt.Text = Regex.Replace(

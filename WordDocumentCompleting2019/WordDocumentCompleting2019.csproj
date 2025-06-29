@@ -179,6 +179,7 @@
     <Content Include="App_Data\DocumentTemplates\SalesLetterForm.docx" />
     <Content Include="App_Data\DocumentTemplates\CarInstallmentSaleFacilityAgreement.docx" />
     <Content Include="App_Data\DocumentTemplates\CreditFacilityApplicationQuestionnaire.docx" />
+    <Content Include="App_Data\DocumentTemplates\AttachmentNo1InstallmentSalesFacilityAgreement.docx" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
