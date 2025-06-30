@@ -1,0 +1,77 @@
+﻿In OpenXML, the Run class (represented by the <w:r> element in WordprocessingML) is a fundamental container for text and inline content within a Word document.
+
+The Descendants<Text>() method in OpenXML is a powerful traversal function that searches through an element's XML structure to find all <w:t> elements (text elements) at any nesting level. Here's a comprehensive explanation:
+
+What It Does:
+Traverses the XML tree starting from a given element
+Finds all descendants of type Text (which represents <w:t> in WordprocessingML)
+Returns a collection of all matching Text elements
+
+In OpenXML's WordprocessingML, text is stored in this hierarchy:
+
+<w:document>
+  <w:body>
+    <w:p>                      <!-- Paragraph -->
+      <w:r>                    <!-- Run -->
+        <w:rPr>...</w:rPr>     <!-- Run properties -->
+        <w:t>Hello</w:t>       <!-- TEXT ELEMENT -->
+      </w:r>
+      <w:r>
+        <w:t>World!</w:t>      <!-- Another text element -->
+      </w:r>
+    </w:p>
+  </w:body>
+</w:document>
+
+
+public class Run : OpenXmlElement
+{
+    // Child elements
+    public RunProperties RunProperties { get; set; } // Formatting
+    public Text Text { get; set; }                 // Text content
+    public Break Break { get; set; }                // Line breaks
+    public TabChar TabChar { get; set; }            // Tabs
+    public Drawing Drawing { get; set; }            // Images/shapes
+    
+    // Methods
+    public override bool HasChildren { get; }
+    public void RemoveAllChildren() { ... }
+}
+
+Element	Purpose	Contains
+Run (w:r)	Formatted text segment	Text, symbols, inline objects
+Text (w:t)	Actual text content	String content
+Paragraph (w:p)	Text container	Runs, paragraph properties
+RunProps (w:rPr)	Formatting instructions	Font, color, size, style
+
+Understanding runs is crucial for:
+Precise text replacement
+Formatting preservation
+Handling mixed-language documents
+Maintaining RTL/LTR directionality
+Processing complex document layouts
+
+
+
+// Set Complex Script font for Persian
+runProps.RunFonts.ComplexScript = "B Nazanin";
+
+// Add RTL direction
+runProps.RightToLeftText = new RightToLeftText { Val = OnOffValue.On };
+
+
+Font Size Units:
+
+Word uses half-points (e.g., 24 = 12pt)
+
+Conversion: pointSize * 2
+
+Recommended Persian Fonts:
+Font Name	Type	Good For
+B Nazanin	Persian	Body text
+IRAN Sans	Persian	Headings
+Lotus	Persian	Formal documents
+Calibri	Latin	English portions
+Times New Roman	Latin	Mixed documents
+
+

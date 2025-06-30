@@ -86,10 +86,8 @@ namespace WordDocumentCompleting2019.Controllers
         /// </summary>
         /// <returns></returns>
         public ActionResult SalesLetterForm()
-        {
-            
+        {            
             List<TemplateModel> MyplaceHolders = CreateSalesFormData();
-
             string templatePath = Server.MapPath("~/App_Data/DocumentTemplates/SalesLetterForm.docx");
             string outputPath = Path.ChangeExtension(Path.GetTempFileName(), ".docx");
 
@@ -103,6 +101,27 @@ namespace WordDocumentCompleting2019.Controllers
             byte[] fileBytes = System.IO.File.ReadAllBytes(outputPath);
             return File(fileBytes, "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "SalesLetterForm.docx");
         }
+        //VehicleDeliveryandAcceptanceCertificateForm
+        /// <summary>
+        ///  فرم گواهی تحویل و قبول خودرو
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult VehicleDeliveryForm()
+        {
+            List<TemplateModel> MyplaceHolders = CreateVehicleDeliveryaFormData();
+            string templatePath = Server.MapPath("~/App_Data/DocumentTemplates/VehicleDeliveryandAcceptanceCertificateForm.docx");
+            string outputPath = Path.ChangeExtension(Path.GetTempFileName(), ".docx");
+
+            // Copy template to temp file
+            System.IO.File.Copy(templatePath, outputPath, true);
+
+            // Replace placeholders
+            WordTemplateHelper.ReplacePlaceholders(outputPath, MyplaceHolders);
+
+            // Return the generated document
+            byte[] fileBytes = System.IO.File.ReadAllBytes(outputPath);
+            return File(fileBytes, "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "VehicleDeliveryForm.docx");
+        }
         private List<TemplateModel> CreateCarInstallmentData()
         {
             List<TemplateModel> templateModels = new List<TemplateModel>()
@@ -111,13 +130,13 @@ namespace WordDocumentCompleting2019.Controllers
                     new TemplateModel()
                     {
                         Key = "agNumber",
-                        Value = "404002",
+                        Value = "404002".ConvertToPersianNumbers(),
                         Group = "header"
                     },
                     new TemplateModel()
                     {
                         Key = "contDate",
-                        Value = "1404/02/25",
+                        Value = "1404/02/25".ConvertToPersianNumbers(),
                         Group = "header"
                     },
                 #endregion
@@ -138,13 +157,13 @@ namespace WordDocumentCompleting2019.Controllers
                         new TemplateModel()
                         {
                             Key = "BTarikhT",
-                            Value = "1358/09/02",
+                            Value = "1358/09/02".ConvertToPersianNumbers(),
                             Group = "body"
                         },
                         new TemplateModel()
                         {
                             Key = "BIdNo",
-                            Value = "543",
+                            Value = "543".ConvertToPersianNumbers(),
                             Group = "body"
                         },
                         new TemplateModel()
@@ -156,7 +175,7 @@ namespace WordDocumentCompleting2019.Controllers
                         new TemplateModel()
                         {
                             Key = "BNC",
-                            Value = "4899068549",
+                            Value = "4899068549".ConvertToPersianNumbers(),
                             Group = "body"
                         },
                         new TemplateModel()
@@ -168,13 +187,13 @@ namespace WordDocumentCompleting2019.Controllers
                         new TemplateModel()
                         {
                             Key = "BPhone",
-                            Value = "02644632837",
+                            Value = "02644632837".ConvertToPersianNumbers(),
                             Group = "body"
                         },
                         new TemplateModel()
                         {
                             Key = "BCellphone",
-                            Value = "09126617096",
+                            Value = "09126617096".ConvertToPersianNumbers(),
                             Group = "body"
                         },
                 #endregion
@@ -360,19 +379,26 @@ namespace WordDocumentCompleting2019.Controllers
                     {
                         Key = "NameSherekat",
                         Value = "سازه گستر سایپا",
-                        Group = "body"
+                        Group = "body",
+                        FontName = "B Titr",
+                        FontSize = 14
+
                     },
                     new TemplateModel()
                     {
                         Key = "SabtNo",
                         Value = "500400".ConvertToPersianNumbers(),
-                        Group = "body"
+                        Group = "body",
+                        FontName = "B Koodak",
+                        FontSize = 20
                     },
                     new TemplateModel()
                     {
                         Key = "SabtDate",
                         Value = "1400/02/15".ConvertToPersianNumbers(),
-                        Group = "body"
+                        Group = "body",
+                        FontName = "B Nazanin",
+                        FontSize = 28
                     },
                     new TemplateModel()
                     {
@@ -854,6 +880,214 @@ namespace WordDocumentCompleting2019.Controllers
                     },
                     
 	            #endregion footer
+            };
+            return templateModels;
+        }
+        private List<TemplateModel> CreateVehicleDeliveryaFormData()
+        {
+            List<TemplateModel> templateModels = new List<TemplateModel>()
+            {
+                #region header
+                    new TemplateModel()
+                    {
+                        Key = "ContNo",
+                        Value = "720820".ConvertToPersianNumbers(),
+                        Group = "header"
+                    },
+                    new TemplateModel()
+                    {
+                        Key = "ContDate",
+                        Value = "1404/02/28".ConvertToPersianNumbers(),
+                        Group = "header"
+                    },
+                #endregion
+                #region body
+                    new TemplateModel()
+                    {
+                        Key = "Tahvildate",
+                        Value = "1404/04/10".ConvertToPersianNumbers(),
+                        Group = "body"
+                    },
+                    new TemplateModel()
+                    {
+                        Key = "Tahvilgirandeh",
+                        Value = "رضا محمد زاده",
+                        Group = "body"
+                    },
+                    new TemplateModel()
+                    {
+                        Key = "Nsystem",
+                        Value = "XU7- پژو پارس",
+                        Group = "body"
+                    },
+                    new TemplateModel()
+                    {
+                        Key = "Model",
+                        Value = "1395".ConvertToPersianNumbers(),
+                        Group = "body"
+                    },
+                    new TemplateModel()
+                    {
+                        Key = "Color",
+                        Value = "مشکی متالیک".ConvertToPersianNumbers(),
+                        Group = "body"
+                    },
+                    new TemplateModel()
+                    {
+                        Key = "Enginnumber",
+                        Value = "EN400564".ConvertToPersianNumbers(),
+                        Group = "body"
+                    },
+                    new TemplateModel()
+                    {
+                        Key = "Chassisnumber",
+                        Value = "ChN720820".ConvertToPersianNumbers(),
+                        Group = "body"
+                    },
+                    new TemplateModel()
+                    {
+                        Key = "Khs",
+                        Value = "\u2610",
+                        Group = "body"
+                    },
+                    new TemplateModel()
+                    {
+                        Key = "Khk",
+                        Value = "\u2611",
+                        Group = "body"
+                    },
+                    new TemplateModel()
+                    {
+                        Key = "PelakMov",
+                        Value = "76د" + "376" + "ایران 68",
+                        Group = "body",
+                        FontName = "Calibri",
+                        FontSize = 24,
+                        Bold = true
+                    },
+                    new TemplateModel()
+                    {
+                        Key = "Pelakenbef",
+                        Value = "88م" + "800" + "ایران 60",
+                        Group = "body",
+                        FontName = "Calibri",
+                        FontSize = 24
+                    },
+                    new TemplateModel()
+                    {
+                        Key = "Pelakda",
+                        Value = "س74-" +  "367-" + "   68",
+                        Group = "body",
+                        FontName = "Calibri",
+                        FontSize = 24
+                    },
+                    new TemplateModel()
+                    {
+                        Key = "Pelakennew",
+                        Value = "54ب" + "376" + "ایران 10",
+                        Group = "body",
+                        FontName = "Calibri",
+                        FontSize=24
+                    },
+                    new TemplateModel()
+                    {
+                        Key = "Comment",
+                        Value = "گواهی تایید شده است.",
+                        Group = "body",
+                    },
+                    
+                    new TemplateModel()
+                    {
+                        Key = "Zapas",
+                        Value = "\u2610",
+                        Group = "body",
+                    },
+                    new TemplateModel()
+                    {
+                        Key = "Jack",
+                        Value = "\u2611",
+                        Group = "body",
+                    },
+                    new TemplateModel()
+                    {
+                        Key = "Cartg",
+                        Value = "\u2611",
+                        Group = "body",
+                    },
+                    new TemplateModel()
+                    {
+                        Key = "Radio",
+                        Value = "\u2611",
+                        Group = "body",
+                    },
+                    new TemplateModel()
+                    {
+                        Key = "Sayer",
+                        Value = "\u2611",
+                        Group = "body",
+                    },
+                    new TemplateModel()
+                    {
+                        Key = "Sanad",
+                        Value = "\u2611",
+                        Group = "body",
+                    },
+                    new TemplateModel()
+                    {
+                        Key = "Shenase",
+                        Value = "\u2611",
+                        Group = "body",
+                    },
+                    new TemplateModel()
+                    {
+                        Key = "Sales",
+                        Value = "\u2611",
+                        Group = "body",
+                    },
+                    new TemplateModel()
+                    {
+                        Key = "Cartt",
+                        Value = "\u2610",
+                        Group = "body",
+                    },
+                    new TemplateModel()
+                    {
+                        Key = "Bimehbadaneh",
+                        Value = "\u2611",
+                        Group = "body",
+                    },
+                    new TemplateModel()
+                    {
+                        Key = "Msayer",
+                        Value = "---",
+                        Group = "body",
+                    },
+                    new TemplateModel()
+                    {
+                        Key = "Gharardad",
+                        Value = "\u2611",
+                        Group = "body",
+                    },
+                    new TemplateModel()
+                    {
+                        Key = "Aghsat",
+                        Value = "\u2611",
+                        Group = "body",
+                    },
+                    new TemplateModel()
+                    {
+                        Key = "Nametahvil",
+                        Value = "\u2611",
+                        Group = "body",
+                    },
+                    new TemplateModel()
+                    {
+                        Key = "Mghsayer",
+                        Value = "با مشتری به توافق رسیده شده است.",
+                        Group = "body",
+                    },
+	                
+                #endregion body
             };
             return templateModels;
         }

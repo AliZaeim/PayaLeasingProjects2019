@@ -85,6 +85,31 @@ namespace WordDocumentCompleting2019.Helpers
                     if (txts.Select(s => s.Text.Trim()).ToList().Exists(a => a == ph.Key.Trim()))
                     {
                         Text txt = txts.FirstOrDefault(f => f.Text.Trim().Equals(ph.Key.Trim()));
+                        if (txt != null)
+                        {
+                            List<Run> runs = element.Descendants<Run>().ToList();
+                            Run runF = runs.FirstOrDefault(x => x.InnerText.Equals(ph.Key.Trim()));
+                            RunProperties props = runF?.RunProperties ?? new RunProperties();
+                            if (!string.IsNullOrEmpty(ph.FontName))
+                            {
+                                props.RunFonts = new RunFonts
+                                {
+                                    Ascii = ph.FontName,
+                                    ComplexScript = ph.FontName,
+                                };                               
+                            }
+                            if (ph.FontSize > 0)
+                            {
+                                props.FontSize = new FontSize
+                                {
+                                    Val = (ph.FontSize).ToString() // Half-point measurement
+                                };
+                                
+                                
+                            }
+                            props.RightToLeftText = new RightToLeftText { Val = ph.RighToLeft };
+                            props.Bold = new Bold { Val = ph.Bold};
+                        }
                         txt.Text = Regex.Replace(
                                     txt.Text,
                                     Regex.Escape(ph.Key),
