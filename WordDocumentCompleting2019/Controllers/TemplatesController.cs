@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using WordDocumentCompleting2019.Helpers;
 using WordDocumentCompleting2019.Models;
-
 namespace WordDocumentCompleting2019.Controllers
 {
     public class TemplatesController : Controller
@@ -35,7 +32,8 @@ namespace WordDocumentCompleting2019.Controllers
 
             // Return the generated document
             byte[] fileBytes = System.IO.File.ReadAllBytes(outputPath);
-            return File(fileBytes, "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "CarInstallment.docx");
+            return GeneratePdf("CarInstallment.pdf", fileBytes);
+            //return File(fileBytes, "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "CarInstallment.docx");
         }
         /// <summary>
         /// پرسشنامه درخواست تسهیلات اعتباری
@@ -57,7 +55,8 @@ namespace WordDocumentCompleting2019.Controllers
 
             // Return the generated document
             byte[] fileBytes = System.IO.File.ReadAllBytes(outputPath);
-            return File(fileBytes, "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "CreditFacility.docx");
+            return GeneratePdf("CreditFacility.pdf", fileBytes);
+            //return File(fileBytes, "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "CreditFacility.docx");
         }
         /// <summary>
         /// پیوست شماره یک قرارداد تسهیلات فروش اقساطی
@@ -79,7 +78,8 @@ namespace WordDocumentCompleting2019.Controllers
 
             // Return the generated document
             byte[] fileBytes = System.IO.File.ReadAllBytes(outputPath);
-            return File(fileBytes, "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "AttachmentNo1Installment.docx");
+            return GeneratePdf("AttachmentNo1Installment.pdf", fileBytes);
+            //return File(fileBytes, "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "AttachmentNo1Installment.docx");
         }
         /// <summary>
         /// فرم بیعنامه
@@ -98,8 +98,32 @@ namespace WordDocumentCompleting2019.Controllers
             WordTemplateHelper.ReplacePlaceholders(outputPath, MyplaceHolders);
 
             // Return the generated document
-            byte[] fileBytes = System.IO.File.ReadAllBytes(outputPath);
-            return File(fileBytes, "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "SalesLetterForm.docx");
+            byte[] fileBytes = System.IO.File.ReadAllBytes(outputPath);            
+            
+            string root = Server.MapPath("~/App_Data/DocumentTemplates/filename.PDF");
+            return GeneratePdf(root,fileBytes);
+            
+            //return File(fileBytes, "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "SalesLetterForm.docx");
+        }
+        public ActionResult GeneratePdf(string root, byte[] WordBytes)
+        {
+            // 1. Create Word document in memory
+            byte[] wordBytes = WordBytes;
+            
+            // 2. Save Word to temp file
+            string tempDocx = Path.GetTempFileName() + ".docx";
+            System.IO.File.WriteAllBytes(tempDocx, wordBytes);
+
+            // 3. Convert to PDF using LibreOffice
+            string tempPdf = Path.ChangeExtension(tempDocx, ".pdf");
+            ConvertDocxToPdfUsingLibreOffice(tempDocx, tempPdf);
+
+            // 4. Return PDF
+            byte[] pdfBytes = System.IO.File.ReadAllBytes(tempPdf);
+            System.IO.File.Delete(tempDocx);
+            System.IO.File.Delete(tempPdf);
+            
+            return File(pdfBytes, "application/pdf", root);
         }
         //VehicleDeliveryandAcceptanceCertificateForm
         /// <summary>
@@ -120,7 +144,9 @@ namespace WordDocumentCompleting2019.Controllers
 
             // Return the generated document
             byte[] fileBytes = System.IO.File.ReadAllBytes(outputPath);
-            return File(fileBytes, "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "VehicleDeliveryForm.docx");
+           
+            return GeneratePdf("VehicleDeliveryForm.pdf", fileBytes);
+            //return File(fileBytes, "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "VehicleDeliveryForm.docx");
         }
         private List<TemplateModel> CreateCarInstallmentData()
         {
@@ -340,14 +366,266 @@ namespace WordDocumentCompleting2019.Controllers
                         },
                         new TemplateModel()
                         {
-                            Key = "KolGeymatHorof",
-                            Value = "25,587,000,000",
+                            Key = "Aghsati",
+                            Value = "50,0000,0000",
+                            Group = "body",
+                            
+                            Bold = true 
+                        },
+                        new TemplateModel()
+                        {
+                            Key = "Kolgeymathorof",
+                            Value = "بیست میلیارد",
                             Group= "body"
                         },
-                        #endregion قیمت_مورد_معامله
+                        new TemplateModel()
+                        {
+                            Key = "Mablaghnaghd",
+                            Value = "1,000,000,000",
+                            Group= "body"
+                        },
+                        new TemplateModel()
+                        {
+                            Key = "Mnaghdhorof",
+                            Value = "یک میلیارد",
+                            Group= "body"
+                        },
+                        new TemplateModel()
+                        {
+                            Key = "Mabaghi",
+                            Value = "850,000,000",
+                            Group= "body"
+                        },
+                        new TemplateModel()
+                        {
+                            Key = "Mabaghihorof",
+                            Value = "هشتصد و پنجاه میلیون",
+                            Group= "body"
+                        },
+                        new TemplateModel()
+                        {
+                            Key = "Mabaghi",
+                            Value = "450,000,000",
+                            Group= "body"
+                        },
+                        new TemplateModel()
+                        {
+                            Key = "Mabaghihorof",
+                            Value = "چهارصد و پنجاه میلیون",
+                            Group= "body"
+                        },
+                        new TemplateModel()
+                        {
+                            Key = "Teye",
+                            Value = "48",
+                            Group= "body"
+                        },
+                        new TemplateModel()
+                        {
+                            Key = "Fzamani",
+                            Value = "6",
+                            Group= "body"
+                        },
+                        new TemplateModel()
+                        {
+                            Key = "Avalinghest",
+                            Value = "50,000,000",
+                            Group= "body"
+                        },
+                        new TemplateModel()
+                        {
+                            Key = "Avalinghesthorof",
+                            Value = "پنجاه میلیون",
+                            Group= "body"
+                        },
+                        new TemplateModel()
+                        {
+                            Key = "Sarresiddate",
+                            Value = "1406/01/15",
+                            Group= "body"
+                        },
+                        new TemplateModel()
+                        {
+                            Key = "Aghsatebadi",
+                            Value = "45,000,000",
+                            Group= "body"
+                        },
+                        new TemplateModel()
+                        {
+                            Key = "Aghsatbadihorof",
+                            Value = "چهل و پنج میلیون",
+                            Group= "body"
+                        },
+                        new TemplateModel()
+                        {
+                            Key = "Faselezamani",
+                            Value = "3 ماه".ConvertToPersianNumbers(),
+                            Group= "body"
+                        },
+                        new TemplateModel()
+                        {
+                            Key = "Mtakhir",
+                            Value = "450,000",
+                            Group= "body"
+                        },
+                        new TemplateModel()
+                        {
+                            Key = "Haghbimehhorof",
+                            Value = "هفتصد و پنجاه میلیون",
+                            Group= "body"
+                        },
+                        new TemplateModel()
+                        {
+                            Key = "Haghbimeh",
+                            Value = "750,000,000",
+                            Group= "body"
+                        },
+                        new TemplateModel()
+                        {
+                            Key = "Ghestavalbimeh",
+                            Value = "450,000,000",
+                            Group= "body"
+                        },
+                        new TemplateModel()
+                        {
+                            Key = "Ghestavalbimehhorof",
+                            Value = "چهار صد و پنجاه میلیون",
+                            Group= "body"
+                        },
+                        new TemplateModel()
+                        {
+                            Key = "Ghestbimeh",
+                            Value = "300,000,000",
+                            Group= "body"
+                        },
+                        new TemplateModel()
+                        {
+                            Key = "Ghestbimehhorof",
+                            Value = "سیصد میلیون",
+                            Group= "body"
+                        },
+                        new TemplateModel()
+                        {
+                            Key = "Tarikhtanzim",
+                            Value = "1402/07/17",
+                            Group= "body"
+                        },
+                #endregion قیمت_مورد_معامله
+                    #region ضامنها
+                        new TemplateModel()
+                        {
+                            Key = "Sadernameone",
+                            Value = "سینا یعقوبی",
+                            Group= "body"
+                        },                        
+                        new TemplateModel()
+                        {
+                            Key = "Checkone",
+                            Value = "1478522154",
+                            Group= "body"
+                        },
+                        new TemplateModel()
+                        {
+                            Key = "Mablaghcheckone",
+                            Value = "1478522154",
+                            Group= "body"
+                        },
+                        new TemplateModel()
+                        {
+                            Key = "Tarikhone",
+                            Value = "1404/09/15",
+                            Group= "body"
+                        },
+                        new TemplateModel()
+                        {
+                            Key = "Shomarehesabone",
+                            Value = "5458787545454",
+                            Group= "body"
+                        },
+                        new TemplateModel()
+                        {
+                            Key = "Bankone",
+                            Value = "صادرات",
+                            Group= "body"
+                        },
+                        
+                        new TemplateModel()
+                        {
+                            Key = "Sadernametwo",
+                            Value = "علیرضا شیرزاد",
+                            Group= "body"
+
+                        },
+                        new TemplateModel()
+                        {
+                            Key = "Checktwo",
+                            Value = "741777777",
+                            Group= "body"
+                        },
+                        new TemplateModel()
+                        {
+                            Key = "Mablaghchecktwo",
+                            Value = "7841245445000",
+                            Group= "body"
+                        },
+                        new TemplateModel()
+                        {
+                            Key = "Tarikhtwo",
+                            Value = "1404/04/04",
+                            Group= "body"
+                        },
+                        new TemplateModel()
+                        {
+                            Key = "Shomarehesabtwo",
+                            Value = "400500600",
+                            Group= "body"
+                        },
+                        new TemplateModel()
+                        {
+                            Key = "Banktwo",
+                            Value = "ملی",
+                            Group= "body"
+                        },
+                        new TemplateModel()
+                        {
+                            Key = "Sadernamethree",
+                            Value = "خانم حسن لو",
+                            Group= "body"
+                        },
+                        new TemplateModel()
+                        {
+                            Key = "Checkthree",
+                            Value = "900600200",
+                            Group= "body"
+                        },
+                        new TemplateModel()
+                        {
+                            Key = "Mablaghcheckthree",
+                            Value = "50040000000",
+                            Group= "body"
+                        },
+                        new TemplateModel()
+                        {
+                            Key = "Tarikhthree",
+                            Value = "1405/05/25",
+                            Group= "body"
+                        },
+                        new TemplateModel()
+                        {
+                            Key = "Shomarehesabthree",
+                            Value = "1472121215245",
+                            Group= "body"
+                        },
+                        new TemplateModel()
+                        {
+                            Key = "Bankthree",
+                            Value = "مـــلت",
+                            Group= "body"
+                        },
+	                #endregion ضامنها
                 #endregion body
                 #region footer
-                    new TemplateModel()
+                new TemplateModel()
                     {
                         Key = "BFullName",
                         Value = "حسن عباسی",
@@ -395,9 +673,9 @@ namespace WordDocumentCompleting2019.Controllers
                     new TemplateModel()
                     {
                         Key = "SabtDate",
-                        Value = "1400/02/15".ConvertToPersianNumbers(),
+                        Value = "15/02/1400",
                         Group = "body",
-                        FontName = "B Nazanin",
+                        
                         FontSize = 28
                     },
                     new TemplateModel()
@@ -976,7 +1254,7 @@ namespace WordDocumentCompleting2019.Controllers
                     new TemplateModel()
                     {
                         Key = "Pelakda",
-                        Value = "س74-" +  "367-" + "   68",
+                        Value = "68   " +  "س74 -" + "367",
                         Group = "body",
                         FontName = "Calibri",
                         FontSize = 24
@@ -1090,6 +1368,25 @@ namespace WordDocumentCompleting2019.Controllers
                 #endregion body
             };
             return templateModels;
+        }
+        
+        private void ConvertDocxToPdfUsingLibreOffice(string inputPath, string outputPath)
+        {
+            string libreOfficePath = @"C:\Program Files\LibreOffice\program\soffice.exe";
+
+            ProcessStartInfo psi = new ProcessStartInfo
+            {
+                FileName = libreOfficePath,
+                Arguments = $"--headless --convert-to pdf \"{inputPath}\" --outdir \"{Path.GetDirectoryName(outputPath)}\"",
+                RedirectStandardOutput = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
+
+            using (Process process = Process.Start(psi))
+            {
+                process.WaitForExit(30000); // Timeout 30 seconds
+            }
         }
     }
 }
