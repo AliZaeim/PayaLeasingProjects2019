@@ -105,26 +105,7 @@ namespace WordDocumentCompleting2019.Controllers
             
             //return File(fileBytes, "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "SalesLetterForm.docx");
         }
-        public ActionResult GeneratePdf(string root, byte[] WordBytes)
-        {
-            // 1. Create Word document in memory
-            byte[] wordBytes = WordBytes;
-            
-            // 2. Save Word to temp file
-            string tempDocx = Path.GetTempFileName() + ".docx";
-            System.IO.File.WriteAllBytes(tempDocx, wordBytes);
-
-            // 3. Convert to PDF using LibreOffice
-            string tempPdf = Path.ChangeExtension(tempDocx, ".pdf");
-            ConvertDocxToPdfUsingLibreOffice(tempDocx, tempPdf);
-
-            // 4. Return PDF
-            byte[] pdfBytes = System.IO.File.ReadAllBytes(tempPdf);
-            System.IO.File.Delete(tempDocx);
-            System.IO.File.Delete(tempPdf);
-            
-            return File(pdfBytes, "application/pdf", root);
-        }
+        
         //VehicleDeliveryandAcceptanceCertificateForm
         /// <summary>
         ///  فرم گواهی تحویل و قبول خودرو
@@ -132,7 +113,7 @@ namespace WordDocumentCompleting2019.Controllers
         /// <returns></returns>
         public ActionResult VehicleDeliveryForm()
         {
-            List<TemplateModel> MyplaceHolders = CreateVehicleDeliveryaFormData();
+            List<TemplateModel> MyplaceHolders = CreateGoodDeliveryFormData();
             string templatePath = Server.MapPath("~/App_Data/DocumentTemplates/VehicleDeliveryandAcceptanceCertificateForm.docx");
             string outputPath = Path.ChangeExtension(Path.GetTempFileName(), ".docx");
 
@@ -147,6 +128,24 @@ namespace WordDocumentCompleting2019.Controllers
            
             return GeneratePdf("VehicleDeliveryForm.pdf", fileBytes);
             //return File(fileBytes, "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "VehicleDeliveryForm.docx");
+        }
+        public ActionResult GoodsDeliveryForm()
+        {
+            List<TemplateModel> MyplaceHolders = CreateGoodDeliveryFormData();
+            string templatePath = Server.MapPath("~/App_Data/DocumentTemplates/GoodsDeliveryAndConfirmationCertificateForm.docx");
+            string outputPath = Path.ChangeExtension(Path.GetTempFileName(), ".docx");
+
+            // Copy template to temp file
+            System.IO.File.Copy(templatePath, outputPath, true);
+
+            // Replace placeholders
+            WordTemplateHelper.ReplacePlaceholders(outputPath, MyplaceHolders);
+
+            // Return the generated document
+            byte[] fileBytes = System.IO.File.ReadAllBytes(outputPath);
+
+            return GeneratePdf("GoodsDeliveryForm.pdf", fileBytes);
+            //return File(fileBytes, "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "GoodsDeliveryForm.docx");
         }
         private List<TemplateModel> CreateCarInstallmentData()
         {
@@ -1369,7 +1368,153 @@ namespace WordDocumentCompleting2019.Controllers
             };
             return templateModels;
         }
-        
+        private List<TemplateModel> CreateGoodDeliveryFormData()
+        {
+            List<TemplateModel> templateModels = new List<TemplateModel>()
+            {
+                new TemplateModel()
+                {
+                    Key = "Pazno",
+                    Value = "14042512",
+                    Group = "header",
+                },
+                new TemplateModel()
+                {
+                    Key = "pazdate",
+                    Value = "1403/05/12",
+                    Group = "header",
+                },
+                new TemplateModel()
+                {
+                    Key = "Injaneb",
+                    Value = "مجید صالحی",
+                    Group = "body",
+                },
+                new TemplateModel()
+                {
+                    Key = "Dartarikh",
+                    Value = "1404/02/14",
+                    Group = "body",
+                },
+                new TemplateModel()
+                {
+                    Key = "Kalaone",
+                    Value = "ماشین 1",
+                    Group = "body",
+                },
+                new TemplateModel()
+                {
+                    Key = "Tedadone",
+                    Value = "1",
+                    Group = "body",
+                },
+                new TemplateModel()
+                {
+                    Key = "Mfanione",
+                    Value = "مشخصات فنی اول",
+                    Group = "body",
+                },
+                new TemplateModel()
+                {
+                    Key = "Kalatwo",
+                    Value = "شرح کالای دوم",
+                    Group = "body",
+                },
+                new TemplateModel()
+                {
+                    Key = "Tedadtwo",
+                    Value = "2",
+                    Group = "body",
+                },
+                new TemplateModel()
+                {
+                    Key = "Mfanitwo",
+                    Value = "مشخصات فنی دوم",
+                    Group = "body",
+                },
+                new TemplateModel()
+                {
+                    Key = "Kalathree",
+                    Value = "شرح کالای سوم",
+                    Group = "body",
+                },
+                new TemplateModel()
+                {
+                    Key = "Tedadthree",
+                    Value = "3",
+                    Group = "body",
+                },
+                new TemplateModel()
+                {
+                    Key = "Mfanithree",
+                    Value = "مشخصات فنی سوم",
+                    Group = "body",
+                },
+                new TemplateModel()
+                {
+                    Key = "Kalafour",
+                    Value = "شرح کالای چهارم",
+                    Group = "body",
+                },
+                new TemplateModel()
+                {
+                    Key = "Tedadfour",
+                    Value = "4",
+                    Group = "body",
+                },
+                new TemplateModel()
+                {
+                    Key = "Mfanifour",
+                    Value = "مشخصات فنی چهارم",
+                    Group = "body",
+                },
+                new TemplateModel()
+                {
+                    Key = "Kalafive",
+                    Value = "شرح کالای 5",
+                    Group = "body",
+                },
+                new TemplateModel()
+                {
+                    Key = "Tedadfive",
+                    Value = "5",
+                    Group = "body",
+                },
+                new TemplateModel()
+                {
+                    Key = "Mfanifive",
+                    Value = "مشخصات فنی 5",
+                    Group = "body",
+                },
+                new TemplateModel()
+                {
+                    Key = "Molahezat",
+                    Value = "اینجا محل ثبت ملاحظات است",
+                    Group = "body",
+                },
+            };
+            return templateModels;
+        }
+        public ActionResult GeneratePdf(string root, byte[] WordBytes)
+        {
+            // 1. Create Word document in memory
+            byte[] wordBytes = WordBytes;
+
+            // 2. Save Word to temp file
+            string tempDocx = Path.GetTempFileName() + ".docx";
+            System.IO.File.WriteAllBytes(tempDocx, wordBytes);
+
+            // 3. Convert to PDF using LibreOffice
+            string tempPdf = Path.ChangeExtension(tempDocx, ".pdf");
+            ConvertDocxToPdfUsingLibreOffice(tempDocx, tempPdf);
+
+            // 4. Return PDF
+            byte[] pdfBytes = System.IO.File.ReadAllBytes(tempPdf);
+            System.IO.File.Delete(tempDocx);
+            System.IO.File.Delete(tempPdf);
+
+            return File(pdfBytes, "application/pdf", root);
+        }
         private void ConvertDocxToPdfUsingLibreOffice(string inputPath, string outputPath)
         {
             string libreOfficePath = @"C:\Program Files\LibreOffice\program\soffice.exe";
