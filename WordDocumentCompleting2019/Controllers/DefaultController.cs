@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using WordDocumentCompleting2019.Helpers;
@@ -32,26 +31,27 @@ namespace WordDocumentCompleting2019.Controllers
 
             string virtualPath = "~/App_Data/GenerateWords";
             string fileName = "CarInstallment-filename.docx"; // Sanitize user-provided filenames!
-
             string serverPath = Server.MapPath(virtualPath);
             string fullPath = Path.Combine(serverPath, fileName);
             using (var fs = new FileStream(fullPath, FileMode.Create, FileAccess.Write))
             {
                 fs.Write(fileBytes, 0, fileBytes.Length);
             }
-            string PdffileName = $"CarInstallment{DateTime.Now.ToLongDateString():yyyyMMddHHmmss}.pdf";
-            string PdfPath = Path.Combine("~/App_Data/Pdfs", PdffileName);
-            bool res = ConvertWordToPdfConverter.Convert(fullPath, Server.MapPath(PdfPath));
-            if (res)
-            {
-                if (System.IO.File.Exists(fullPath))
-                {
-                    System.IO.File.Delete(fullPath);
-                }
-            }
-            byte[] Pdffiledata = System.IO.File.ReadAllBytes(Server.MapPath(PdfPath));
-            string contentType = MimeMapping.GetMimeMapping(Server.MapPath(PdfPath));            
-            return File(Pdffiledata, contentType);            
+            string PdfVirtualpath = "~/App_Data/Pdfs";
+            string PdffileName = $"CarInstallment{DateTime.Now:yyyyMMddTHHmmss}.pdf";
+            string PdfserverPath = Server.MapPath(PdfVirtualpath);
+            string PdfPath = Path.Combine(PdfserverPath, PdffileName);
+
+
+            string htmlVirtualpath = "~/App_Data/htmls";
+            string htmlfileName = $"CarInstallment{DateTime.Now:yyyyMMddTHHmmss}.html";
+            string htmlserverPath = Server.MapPath(htmlVirtualpath);
+            string htmlPath = Path.Combine(htmlserverPath, htmlfileName);
+            //System.IO.File.WriteAllText(Path.Combine(PdfserverPath, $"test{DateTime.Now:yyyyMMddTHHmmss}.txt"), "test");
+            WordToHtmlConverter.Convert(fullPath, htmlPath);
+
+            return Content("با موفقیت ایجاد شد !");
+                      
         }
         /// <summary>
         /// پرسشنامه درخواست تسهیلات اعتباری
@@ -82,7 +82,7 @@ namespace WordDocumentCompleting2019.Controllers
             }
             string PdffileName = $"CreditFacility{DateTime.Now:yyyyMMddTHHmmss}.pdf";
             string PdfPath = Path.Combine("~/App_Data/Pdfs", PdffileName);
-            bool res = ConvertWordToPdfConverter.Convert(fullPath, Server.MapPath(PdfPath));
+            bool res = WordToPdfService.Convert(fullPath, Server.MapPath(PdfPath));
             if (res)
             {
                 if (System.IO.File.Exists(fullPath))
@@ -92,7 +92,7 @@ namespace WordDocumentCompleting2019.Controllers
             }
             byte[] Pdffiledata = System.IO.File.ReadAllBytes(Server.MapPath(PdfPath));
             string contentType = MimeMapping.GetMimeMapping(Server.MapPath(PdfPath));
-            return File(Pdffiledata, contentType);
+            return File(Pdffiledata, contentType, PdffileName);
         }
         /// <summary>
         /// پیوست شماره یک قرارداد تسهیلات فروش اقساطی
@@ -123,7 +123,7 @@ namespace WordDocumentCompleting2019.Controllers
             }
             string PdffileName = $"AttachmentNo1Installment{DateTime.Now:yyyyMMddTHHmmss}.pdf";
             string PdfPath = Path.Combine("~/App_Data/Pdfs", PdffileName);
-            bool res = ConvertWordToPdfConverter.Convert(fullPath, Server.MapPath(PdfPath));
+            bool res = WordToPdfService.Convert(fullPath, Server.MapPath(PdfPath));
             if (res)
             {
                 if (System.IO.File.Exists(fullPath))
@@ -133,7 +133,7 @@ namespace WordDocumentCompleting2019.Controllers
             }
             byte[] Pdffiledata = System.IO.File.ReadAllBytes(Server.MapPath(PdfPath));
             string contentType = MimeMapping.GetMimeMapping(Server.MapPath(PdfPath));
-            return File(Pdffiledata, contentType);
+            return File(Pdffiledata, contentType, PdffileName);
         }
         /// <summary>
         /// فرم بیعنامه
@@ -165,7 +165,7 @@ namespace WordDocumentCompleting2019.Controllers
             }
             string PdffileName = $"SalesLetterForm{DateTime.Now:yyyyMMddTHHmmss}.pdf";
             string PdfPath = Path.Combine("~/App_Data/Pdfs", PdffileName);
-            bool res = ConvertWordToPdfConverter.Convert(fullPath, Server.MapPath(PdfPath));
+            bool res = WordToPdfService.Convert(fullPath, Server.MapPath(PdfPath));
             if (res)
             {
                 if (System.IO.File.Exists(fullPath))
@@ -175,7 +175,7 @@ namespace WordDocumentCompleting2019.Controllers
             }
             byte[] Pdffiledata = System.IO.File.ReadAllBytes(Server.MapPath(PdfPath));
             string contentType = MimeMapping.GetMimeMapping(Server.MapPath(PdfPath));
-            return File(Pdffiledata, contentType);
+            return File(Pdffiledata, contentType, PdffileName);
         }
         /// <summary>
         ///  فرم گواهی تحویل و قبول خودرو
@@ -207,7 +207,7 @@ namespace WordDocumentCompleting2019.Controllers
             }
             string PdffileName = $"VehicleDeliveryaForm{DateTime.Now:yyyyMMddTHHmmss}.pdf";
             string PdfPath = Path.Combine("~/App_Data/Pdfs", PdffileName);
-            bool res = ConvertWordToPdfConverter.Convert(fullPath, Server.MapPath(PdfPath));
+            bool res = WordToPdfService.Convert(fullPath, Server.MapPath(PdfPath));
             if (res)
             {
                 if (System.IO.File.Exists(fullPath))
@@ -217,7 +217,7 @@ namespace WordDocumentCompleting2019.Controllers
             }
             byte[] Pdffiledata = System.IO.File.ReadAllBytes(Server.MapPath(PdfPath));
             string contentType = MimeMapping.GetMimeMapping(Server.MapPath(PdfPath));
-            return File(Pdffiledata, contentType);
+            return File(Pdffiledata, contentType, PdffileName);
         }
         public ActionResult GoodsDeliveryForm()
         {
@@ -245,7 +245,7 @@ namespace WordDocumentCompleting2019.Controllers
             }
             string PdffileName = $"GoodsDeliveryForm_{DateTime.Now:yyyyMMdd-HHmmss}.pdf";
             string PdfPath = Path.Combine("~/App_Data/Pdfs", PdffileName);
-            bool res = ConvertWordToPdfConverter.Convert(fullPath, Server.MapPath(PdfPath));
+            bool res = WordToPdfService.Convert(fullPath, Server.MapPath(PdfPath));
             if (res)
             {
                 if (System.IO.File.Exists(fullPath))
@@ -255,9 +255,8 @@ namespace WordDocumentCompleting2019.Controllers
             }
             byte[] Pdffiledata = System.IO.File.ReadAllBytes(Server.MapPath(PdfPath));
             string contentType = MimeMapping.GetMimeMapping(Server.MapPath(PdfPath));
-            
-            return File(Pdffiledata, contentType);
-            
+            return File(Pdffiledata, contentType, PdffileName);
+
         }
     }
 }

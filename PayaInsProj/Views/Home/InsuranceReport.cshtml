@@ -1,0 +1,179 @@
+﻿@model PayaInsProj.Models.ViewModels.InsuranceReportViewModel
+@using System.Reflection
+@using System.ComponentModel.DataAnnotations
+@{
+    ViewBag.Title = "گزارش صدور بیمه";
+}
+<style>
+    .table-container {
+        height: 13cm; /* Fixed container height */
+        overflow-y: auto; /* Enable vertical scroll */
+        border: 1px solid #ccc;
+    }
+
+    table {
+        width: 100%; /* Full width */
+        border-collapse: collapse;
+    }
+
+    th {
+        position: sticky; /* Makes header stick */
+        top: 0; /* Stick to top of container */
+        background: #7aa1cc !important; /* Cover scrolled content */
+        padding: 2px;
+        border-bottom: 2px solid #ddd;
+        z-index: 1; /* Ensure header stays above body */
+    }
+
+    td {
+        padding: 2px;
+        border-bottom: 1px solid #ddd;
+        width: max-content !important;
+    }
+
+    /* Optional: Add hover effect for rows */
+    tbody tr td:hover {
+        background-color: #9fd4b3 !important;
+        cursor: pointer;
+        color: #fff !important;
+    }
+
+    .mytext-danger td {
+        color: #ff0000 !important;
+    }
+
+    .input-text {
+        width: 30mm;
+    }
+
+    .input-number {
+        width: 15mm;
+    }
+</style>
+<h1 class="text-center alert alert-info">گزارش آخرین بیمه نامه های صادر شده</h1>
+@*<div class="row">
+        <div class="col-md-12 ">
+            <h6 class="text-center text-danger">منظور از تاریخ، تاریخ پایان بیمه نامه می باشد</h6>
+            <form class="row  justify-content-center align-items-center" method="post">
+                @Html.AntiForgeryToken()
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="d-block">
+                    <div class="col-md-2">
+                        <span>از تاریخ</span>
+                        <input asp-for="StartDate" class="text-center input-text" pattern="^\d{4}\/(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])$"
+                               title="Enter a date in YYYY/MM/DD format" placeholder="yyyy/mm/dd" />
+                        <span asp-validation-for="StartDate" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-2">
+                        <span>تا تاریخ</span>
+                        <input asp-for="EndDate" class="text-center input-text" pattern="^\d{4}\/(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])$"
+                               title="Enter a date in YYYY/MM/DD format" placeholder="yyyy/mm/dd" />
+                        <span asp-validation-for="EndDate" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-4">
+                        <span syle="font-size:12px;">هشدار برای اعتبار کمتر و مساوی با</span>
+                        <input asp-for="AlarmDays" class="text-center input-number" /> <span>روز</span>
+                        <span asp-validation-for="AlarmDays" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-2">
+                        <input type="submit" formaction="InsuranceReport" value="تاییــد" class="btn btn-primary col-md-4" />
+                        <input type="submit" formaction="CreateExcelReport" class="btn btn-success col-md-6" value="گزارش اکسل" />
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>*@
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="container">
+        <h6 class="text-center text-danger">منظور از تاریخ، تاریخ پایان بیمه نامه می باشد</h6>
+        <hr />
+        <div class="row">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="col-md-2">
+                @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label col-md-4" })
+
+                @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control" , @placeholder= "yyyy/mm/dd", @pattern = @"^\d{4}\/(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])$" } })
+                @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
+
+            </div>
+            <div class="col-md-2">
+                @Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "control-label col-md-4" })
+
+                @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control", @placeholder= "yyyy/mm/dd", @pattern = @"^\d{4}\/(0[1-9]|1[0-2])\/(0[1-9]|[12][0-9]|3[01])$" } })
+                @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
+
+            </div>
+
+            <div class="col-md-4">
+                <span syle="font-size:12px;">هشدار برای اعتبار کمتر و مساوی با</span>
+
+
+                @Html.EditorFor(model => model.AlarmDays, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.AlarmDays, "", new { @class = "text-danger" })
+
+            </div>
+            <div class="col-md-2">
+                <input type="submit" formaction="InsuranceReport" value="تاییــد" class="btn btn-primary col-4" />
+                <input type="submit" formaction="CreateExcelReport" class="btn btn-success col-6" value="گزارش اکسل" />
+            </div>
+        </div>
+        
+    </div>
+}
+@if (Model.InsInfoDtos != null)
+{
+    if (Model.InsInfoDtos.Count > 0)
+    {
+        <div class="container-fluid mt-2">
+            <div class="row table-responsive">
+
+                <h5 class="text-center  alert alert-succes"> تعداد: @Model.InsInfoDtos.Count </h5>
+
+                <div class="table-container">
+                    <table style="font-size:10px" class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th class="text-center align-middle">#</th>
+                                @foreach (var thh in Model.InsInfoDtosInformations)
+                                {
+                                    <th class="text-center align-middle">@thh.DisplayTitle</th>
+                                }
+                            </tr>
+                        </thead>
+                        @{
+                            int radif = 1;
+                        }
+                        <tbody>
+                            @foreach (var item in Model.InsInfoDtos.OrderBy(o => o.ValidDays).ToList())
+                            {
+                                var itemProps = item.GetType().GetProperties().ToList();
+                                <tr class=@((item.ValidDays<= Model.AlarmDays)? "mytext-danger":"")>
+                                    <td class="align-middle text-center">@radif</td>
+                                    @foreach (var fd in itemProps.OrderBy(x => x.GetCustomAttribute<DisplayAttribute>()?.GetOrder() ?? int.MaxValue))
+                                    {
+                                        <td class="align-middle text-center zplr-1mm">@fd.GetValue(item, null)</td>
+                                    }
+                                </tr>
+                                radif++;
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    }
+}
+
+@* <div>
+        <a asp-action="Index" class="text-decoration-none">بازگشت</a>
+    </div>
+*@
+
+@section scripts{
+    
+    }

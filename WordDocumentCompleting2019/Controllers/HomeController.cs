@@ -1,5 +1,4 @@
-﻿
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 
 namespace WordDocumentCompleting2019.Controllers
 {
@@ -9,7 +8,7 @@ namespace WordDocumentCompleting2019.Controllers
         
 
         public ActionResult Index()
-        {
+        {           
             return View();
         }
         

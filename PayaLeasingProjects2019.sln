@@ -1,9 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.36107.64
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36221.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WordDocumentCompleting2019", "WordDocumentCompleting2019\WordDocumentCompleting2019.csproj", "{18464D3B-E751-4DD0-891A-40C7D406E0ED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PayaInsProj", "PayaInsProj\PayaInsProj.csproj", "{A489CAA0-0B9D-4ED1-9096-ABF43A455A25}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContractSettlement", "ContractSettlement\ContractSettlement.csproj", "{E8254766-6A4B-41F3-A705-0836D8E8A241}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{18464D3B-E751-4DD0-891A-40C7D406E0ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{18464D3B-E751-4DD0-891A-40C7D406E0ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{18464D3B-E751-4DD0-891A-40C7D406E0ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A489CAA0-0B9D-4ED1-9096-ABF43A455A25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A489CAA0-0B9D-4ED1-9096-ABF43A455A25}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A489CAA0-0B9D-4ED1-9096-ABF43A455A25}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A489CAA0-0B9D-4ED1-9096-ABF43A455A25}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E8254766-6A4B-41F3-A705-0836D8E8A241}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E8254766-6A4B-41F3-A705-0836D8E8A241}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E8254766-6A4B-41F3-A705-0836D8E8A241}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E8254766-6A4B-41F3-A705-0836D8E8A241}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

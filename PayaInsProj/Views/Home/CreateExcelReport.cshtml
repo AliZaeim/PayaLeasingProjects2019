@@ -1,0 +1,13 @@
+﻿@model PayaInsProj.Models.ViewModels.ExcelReportResultViewModel
+@{
+    ViewBag.Title = "ایجاد فایل اکسل";
+}
+@if (!string.IsNullOrEmpty(Model.Root))
+{
+    <h1>فایل اکسل ایجاد شد</h1>
+    <hr />
+    <a href="@Model.Root" class="text-decoration-none btn btn-info">دانلود فایل اکسل</a>
+    
+    <a href="/" class="text-decoration-none btn btn-primary">صفحه اصلی</a>
+}
+

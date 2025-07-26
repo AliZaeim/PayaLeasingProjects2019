@@ -1,0 +1,55 @@
+﻿@model IEnumerable<PayaInsProj.Models.PayaInsureDbData.FileUpoadHistory>
+
+@{
+    ViewBag.Title = "سوابق آپلود";
+}
+
+<h2 class="text-md-center alert alert-info" >سوابق آپلود</h2>
+
+
+<table class="table">
+    <tr>
+        <th class="text-center align-middle">
+            @Html.DisplayNameFor(model => model.Title)
+        </th>
+        <th class="text-center align-middle">
+            @Html.DisplayNameFor(model => model.Comment)
+        </th>
+        <th class="text-center align-middle">
+            @Html.DisplayNameFor(model => model.FileName)
+        </th>
+        <th class="text-center align-middle">
+            @Html.DisplayNameFor(model => model.RegDate)
+        </th>
+        <th class="text-center align-middle">
+            @Html.DisplayNameFor(model => model.UserId)
+        </th>
+        <th class="text-center align-middle">
+            عملیات
+        </th>
+    </tr>
+
+@foreach (var item in Model.OrderByDescending(x => x.RegDate)) {
+    <tr>
+        <td class="text-center align-middle">
+            @Html.DisplayFor(modelItem => item.Title)
+        </td>
+        <td class="text-center align-middle">
+            @Html.DisplayFor(modelItem => item.Comment)
+        </td>
+        <td class="text-center align-middle">
+            @Html.DisplayFor(modelItem => item.FileName)
+        </td>
+        <td class="text-center align-middle">
+            @Html.DisplayFor(modelItem => item.RegDate)
+        </td>
+        <td class="text-center align-middle">
+            @Html.DisplayFor(modelItem => item.UserId)
+        </td>
+        <td>
+            @Html.ActionLink("دانلود", "DownloadFile",  new { fileName = item.FileName })
+        </td>
+    </tr>
+}
+
+</table>
