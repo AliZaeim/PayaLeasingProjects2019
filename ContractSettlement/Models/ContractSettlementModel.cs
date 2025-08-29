@@ -5,6 +5,7 @@ namespace ContractSettlement.Models
     /// <summary>
     /// تسویه قرارداد
     /// </summary>
+    
     public class ContractSettlementModel
     {
         /// <summary>
@@ -31,7 +32,7 @@ namespace ContractSettlement.Models
         /// مبلغ تسهیلات
         /// </summary>
         [Display(Name = "مبلغ تسهیلات")]
-        public long? FacilityAmount { get; set; }
+        public long FacilityAmount { get; set; }
         /// <summary>
         /// کل اقساط
         /// </summary>
@@ -106,16 +107,18 @@ namespace ContractSettlement.Models
         /// نود درصد نوع اقساط آتی
         /// </summary>
         [Display(Name = "نود درصد نوع اقساط آتی")]
-        public long NinetyPercentofSubFutureInstallments { get; set; }
+        public long NinetyPercentofSubFutureInstallments { get; set; }//بر اساس نوع اقساط آتی
         /// <summary>
         /// ده درصد نوع اقساط آتی
         /// </summary>
-        [Display(Name = "ده درصد نوع اقساط آتی")]
+        [Display(Name = "ده درصد نوع اقساط آتی")]//بر اساس نوع اقساط آتی
         public long TenPercentofSubFutureInstallments { get; set; }
         /// <summary>
         /// قابل پرداخت
         /// </summary>
         [Display(Name = "قابل پرداخت")]
-        public long? PayableValue { get; set; }
+        public dynamic PayableValue { get; set; }//Formula
     }
+    
+    
 }

@@ -1,0 +1,14 @@
+﻿@model ContractSettlement_Ver2.Models.Entites.SalaryFormula
+
+<h2>ثبت فرمول جدید</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.LabelFor(m => m.Title)
+    @Html.TextBoxFor(m => m.Title)
+
+    @Html.LabelFor(m => m.FormulaText)
+    @Html.TextBoxFor(m => m.FormulaText)
+
+    <input type="submit" value="ذخیره فرمول" />
+}

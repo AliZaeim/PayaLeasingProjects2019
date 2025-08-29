@@ -1,0 +1,40 @@
+﻿@model ContractSettlement.Models.ViewModels.FormulaViewModel
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Price)
+        @Html.TextBoxFor(m => m.Price, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Days)
+        @Html.TextBoxFor(m => m.Days, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Tax)
+        @Html.TextBoxFor(m => m.Tax, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.SalaryFormula)
+        @Html.TextBoxFor(m => m.SalaryFormula, new { @class = "form-control", placeholder = "مثال: [Price] * [Days] * (1 - [Tax])" })
+        @Html.ValidationMessageFor(m => m.SalaryFormula)
+        <small class="form-text text-muted">
+            از متغیرهای [Price], [Days], [Tax] استفاده کنید
+        </small>
+    </div>
+
+    <button type="submit" class="btn btn-primary">محاسبه حقوق</button>
+
+    if (Model.CalculatedSalary > 0)
+    {
+        <div class="mt-3 alert alert-success">
+            @Html.DisplayNameFor(m => m.CalculatedSalary):
+            <strong>@Model.CalculatedSalary.ToString("N0")</strong>
+        </div>
+    }
+}

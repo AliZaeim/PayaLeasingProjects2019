@@ -1,0 +1,7 @@
+﻿Required Facilities
+1- Get Classes in a directory and subdirecties of Solution
+2- Create Formula Attribute for class propeties for assigning formula to property
+3- Create Check attribute for only class for specefic class
+4- Method for getting class properties Info
+5- Method for getting class Formula Properties
+6- Method for Getting Numeric Properties of class

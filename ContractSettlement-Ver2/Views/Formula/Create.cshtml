@@ -1,0 +1,26 @@
+﻿
+@model ContractSettlement_Ver2.Models.ViewModels.FormulaViewModel
+@{
+    ViewBag.Title = "محاسبه حقوق";
+}
+
+<h2>محاسبه حقوق</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.LabelFor(m => m.Price)
+    @Html.TextBoxFor(m => m.Price)
+
+    @Html.LabelFor(m => m.Days)
+    @Html.TextBoxFor(m => m.Days)
+
+    @Html.LabelFor(m => m.Tax)
+    @Html.TextBoxFor(m => m.Tax)
+
+    @Html.LabelFor(m => m.SalaryFormula)
+    @Html.DropDownListFor(m => m.SalaryFormula, Model.AvailableFormulas, "-- انتخاب فرمول --")
+
+    <input type="submit" value="محاسبه" />
+
+    <h3>نتیجه: @Model.CalculatedSalary</h3>
+}
