@@ -1,0 +1,114 @@
+﻿@model DynamicClassProject.Models.ViewModels.DynamicClassViewModel
+@using DynamicClassProject.Utilities;
+
+
+
+
+<h2>مقادیر را برای نمونه سازی از کلاس  @Model.SelectedClass وارد کنید</h2>
+
+@using (Html.BeginForm("CreateInstance", "ClsInstances", FormMethod.Post))
+{
+    @Html.HiddenFor(m => m.SelectedClass)
+    @Html.AntiForgeryToken()
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>ردیف</th>
+                <th>عنوان</th>
+                <th>مقدار</th>
+                <th>خطا</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                int row = 1;
+                foreach (var prop in Model.Properties)
+                {
+                    var attrs = Html.GetValidationAttributes(prop); // call helper
+                                                                    //if (prop.Name == "Id") continue; // skip PK
+
+                    var display = prop.DisplayName;
+
+
+                    <tr>
+                        <td>@row</td>
+                        <td>@display</td>
+                        <td>
+                            @Html.TextBox(
+                                prop.Name,
+                                null,
+                                Html.GetValidationAttributes(prop)
+                            )
+                        </td>
+                        <td>
+                            @Html.ValidationMessage(prop.Name, "", new { @class = "text-danger" })
+                        </td>
+                    </tr>
+
+                    row++;
+                }
+            }
+        </tbody>
+    </table>
+    <!--<table class="table table-bordered">
+        <tr>
+            <th class="text-center">متغیر</th>
+            <th class="text-center">نام</th>
+            <th class="text-center">نوع</th>
+            <th class="text-center">فرمول</th>
+            <th class="text-center">مقدار</th>
+        </tr>-->
+
+
+    @*@for (int i = 0; i < Model.Properties.Count; i++)
+        {
+            var attrs = Html.GetValidationAttributes(Model.Properties[i]);
+            <tr>
+                <td>@Model.Properties[i].Name</td>
+                <td>@Model.Properties[i].DisplayName</td>
+                <td>@Model.Properties[i].Type</td>
+                <td>
+                    @{
+                        if (Model.Properties[i].IsFormula)
+                        {
+                            <span style="font-size:10px">@Model.Properties[i].PropFormula</span>
+                        }
+                        else
+                        {
+                            <span>خــیر</span>
+                        }
+                    }
+
+                </td>
+                <td>
+                    @Html.HiddenFor(m => m.Properties[i].Name)
+                    @Html.HiddenFor(m => m.Properties[i].IsNumeric)
+                    @Html.HiddenFor(m => m.Properties[i].IsFormula)
+                    @Html.HiddenFor(m => m.Properties[i].Type)
+                    @if (Model.Properties[i].IsFormula)
+                    {
+                        <span>با فرمول مقدار دهی می شود</span>
+                    }
+                    else
+                    {
+
+                        @Html.TextBox(Model.Properties[i].Name, null, new Dictionary<string, object>(attrs)
+                        {
+                            { "class", "form-control" },
+                            { "type", (Model.Properties[i].IsNumeric) ? "number" : "text" },
+                        })
+                        @Html.ValidationMessage(Model.Properties[i].Name, null, new { @class = "text-danger" })
+                    }
+
+
+                </td>
+            </tr>
+        }*@
+    <!--</table>-->
+
+    <input type="submit" value="محاسبه" />
+}
+@section Scripts {
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+}

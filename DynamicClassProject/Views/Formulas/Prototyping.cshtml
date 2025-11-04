@@ -1,0 +1,136 @@
+﻿@model DynamicClassProject.Models.ViewModels.PrototypingViewModel
+@{
+    ViewBag.Title = "نمونه سازی کلاس";
+}
+
+<h2 class="text-center alert alert-info">نمونه سازی از کلاس</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="container">
+        <div class="row">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="col-sm-6" id="frmDiv">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ClassName, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @*@Html.EditorFor(model => model.ClassName, new { htmlAttributes = new { @class = "form-control" } })*@
+                        <select id="clsName" name="ClassName" class="form-control">
+                            <option value="">نام کلاس را انتخاب کنید</option>
+                            @foreach (var item in Model.ClassNames)
+                            {
+                                <option value="@item">@item</option>
+                            }
+                        </select>
+                        @Html.ValidationMessageFor(model => model.ClassName, "", new { @class = "text-danger" })
+                    </div>
+
+                </div>
+                <div id="plc" class="mt-3">
+
+                </div>
+                @*<div class="form-group">
+                        <label class="control-label col-md-2" for="FormulaName">نام فرمول</label>
+                        <div class="col-md-10">
+                            <input class="form-control text-box single-line" data-val="true" data-val-required="لطفا نام فرمول را وارد کنید" id="FormulaName" name="FormulaName" type="text" value="">
+                            <span class="field-validation-valid text-danger" data-valmsg-for="FormulaName" data-valmsg-replace="true"></span>
+                        </div>
+                    </div>*@
+
+
+            </div>
+            <div class="col-sm-6">
+                <div id="NumericFields" style="height:auto">
+
+                </div>
+                <div id="FormulaFieldsValue" style="height:auto">
+
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <div class="form-group mt-3">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="مشاهده نتیجه" id="btnSave" class="btn btn-success col-sm-12" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("بازگشت", "Index")
+</div>
+
+@section Scripts {
+    <script>
+        $.formatString = function (format) {
+            var args = Array.prototype.slice.call(arguments, 1);
+            return format.replace(/{(\d+)}/g, function (match, number) {
+                return typeof args[number] !== 'undefined' ? args[number] : match;
+            });
+        };
+        function GenerateFormGroupElement(Name, DisplayName) {
+            var element;
+            var line1 = "<div class='form-group'>";
+            var line2 = $.formatString("<label class='control-label col-md-2' for='{0}'>{1}</label>",Name,DisplayName);
+            var line3 = "<div class='col-md-10'>";
+            var line4 = $.formatString("<input class='form-control text-box single-line' data-val='true'  id='{0}' name='{1}' type='text' value=''>", Name, Name);
+            var line5 = $.formatString("<span class='field-validation-valid text-danger' data-valmsg-for='{0}' data-valmsg-replace='true'></span>", Name);
+            var line6 = "</div></div>";
+            var result = line1 + line2 + line3 + line4 + line5 + line6;
+            return result;
+        };
+        $("#clsName").change(function () {
+            var N = $(this).val();
+
+            $.ajax({
+                url: "/Formulas/GetNumericFieldsofClass",
+                type: "GET",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: { className: N },
+                success: function (result) {
+                    if (result !== null) {
+                        $('#NumericFields').empty();
+                        var title = "<p><b>پارامترها</b></p>";
+                        $("#plc").empty();
+                        $("#plc").append(title);
+                        $.each(result, function (index, ddd) {
+                            var html = GenerateFormGroupElement(ddd.Name, ddd.DisplayName);
+
+                            $("#plc").append(html);
+                        });
+                        $.ajax({
+                            url: "/Formulas/GetFormulaFieldsofClass",
+                            type: "Get",
+                            dataType: "json",
+                            data: { className: N, getFormula:1 },
+                            success: function (data) {
+                                console.log(data);
+                                $('#NumericFields').empty();
+                                $('#NumericFields').append('<p">فرمولها : <p>');
+                                $.each(data, function (index, item) {
+                                    $('#NumericFields').append($('<p>' + item.PropDisplayName + "--> فرمول => " + item.PropFormula +  '</p>'));
+                                });
+                            }
+                        });
+                    }
+
+                },
+                error: function (xhr, status, error) {
+                    ('#NumericFields').empty();
+                    console.log("AJAX Error!");
+                    console.log("Status: " + status);  // e.g. "error", "timeout", "abort"
+                    console.log("Error: " + error);    // e.g. "Not Found"
+                    console.log("Response Text: " + xhr.responseText); // server response
+                }
+            });
+
+        });
+    </script>
+}

@@ -1,0 +1,63 @@
+﻿@model IEnumerable<LegalProject.Models.Entities.DetailsModel>
+
+@{
+    ViewBag.Title = "نمایش جزئیات";
+}
+
+<h2 class="text-center alert alert-info">نمایش جزئیات</h2>
+
+<p>
+    @Html.ActionLink("ثبت جزئیات", "CreateDetails", new { mainModelId = Model.FirstOrDefault().MainModelId })
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.MainModel.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ActionType)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ActionDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Comment)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CaseNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TrackingCode)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.MainModel.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ActionType)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ActionDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Comment)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CaseNumber)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TrackingCode)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+        </td>
+    </tr>
+}
+
+</table>

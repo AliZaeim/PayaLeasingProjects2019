@@ -1,0 +1,168 @@
+﻿@model DynamicClassProject.Models.ViewModels.DynamicClassViewModel
+@using DynamicClassProject.Utilities;
+
+<h2>مقادیر را برای نمونه سازی از کلاس  @Model.SelectedClass وارد کنید</h2>
+
+@using (Html.BeginForm("CreateInstance", "ClsInstances", FormMethod.Post, new { id = "myForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.SelectedClass)
+    <input type="hidden" id="clsName" value="@Model.SelectedClass" />
+    <div class="col-md-12">
+        @for (int i = 0; i < Model.Properties.Where(w => !w.IsFormula).Count(); i++)
+        {
+            IDictionary<string, object> attrs = Html.GetValidationAttributes(Model.Properties[i]); // call helper
+            @Html.HiddenFor(x => x.Properties[i].Name);
+            @Html.HiddenFor(x => x.Properties[i].Type);
+            @Html.HiddenFor(x => x.Properties[i].IsFormula);
+            @Html.HiddenFor(x => x.Properties[i].IsNumeric);
+            @Html.HiddenFor(x => x.Properties[i].IsRequired);
+            @Html.HiddenFor(x => x.Properties[i].DisplayName);
+            @Html.HiddenFor(x => x.Properties[i].Order);
+            @Html.HiddenFor(x => x.Properties[i].PropFormula);
+            @*@Html.HiddenFor(x => x.Properties[i].Validations);*@
+            <div class="form-group">
+                <label class="form-label col-md-3 d-inline-block">@Model.Properties[i].DisplayName: </label>
+
+                @Html.TextBoxFor(x => x.Properties[i].Value,
+                    attrs.Concat(new Dictionary<string, object>
+                    {
+                        { "class", "form-control d-inline-block" },
+                        { "type", Model.Properties[i].IsNumeric ? "number" : "text" },
+                        { "placeholder", Model.Properties[i].DisplayName },
+                        { "data_propname", Model.Properties[i].Name },
+                        { "data_formula", Model.Properties[i].IsFormula }
+                    }).ToDictionary(k => k.Key, v => v.Value)
+                )
+                <span>&emsp;@Model.Properties[i].Name</span>
+                @Html.ValidationMessageFor(x => x.Properties[i].Value, "", new { @class = "text-danger d-block" })
+
+
+
+            </div>
+
+        }
+        <button type="button" id="postButton" class="mt-2 mb-2 btn btn-success col-md-12">محاسبه</button>
+        <hr />
+
+        @for (int i = 0; i < Model.Properties.Count; i++)
+        {
+            if (!Model.Properties[i].IsFormula)
+            {
+                continue;
+            }
+
+            @Html.HiddenFor(x => x.Properties[i].Name);
+            @Html.HiddenFor(x => x.Properties[i].Type);
+            @Html.HiddenFor(x => x.Properties[i].IsFormula);
+            @Html.HiddenFor(x => x.Properties[i].IsNumeric);
+            @Html.HiddenFor(x => x.Properties[i].IsRequired);
+            @Html.HiddenFor(x => x.Properties[i].DisplayName);
+            @Html.HiddenFor(x => x.Properties[i].Order);
+            @Html.HiddenFor(x => x.Properties[i].PropFormula);
+            @*@Html.HiddenFor(x => x.Properties[i].Validations);*@
+            <div class="form-group mt-2" data-formula="1">
+                <label class="form-label col-md-3 d-inline-block">@Model.Properties[i].DisplayName</label>
+
+                @Html.TextBoxFor(x => Model.Properties[i].Value,
+                    new
+                    {
+                        @class = "form-control d-inline-block",
+                        @readonly = "readonly",
+                        type = Model.Properties[i].IsNumeric ? "number" : "text",
+                        data_name = Model.Properties[i].Name,
+                        data_formula = Model.Properties[i].IsFormula,
+                        data_numeric = Model.Properties[i].IsNumeric
+                    })
+                <span>@Model.Properties[i].Name</span>
+                <span>==></span>
+                <span>@Model.Properties[i].PropFormula</span>
+
+
+            </div>
+        }
+
+        <button type="button" id="saveData" disabled class="mt-2 mb-2 btn btn-primary col-md-12">ثبت داده ها</button>
+    </div>
+
+
+
+
+
+}
+
+
+
+@section Scripts {
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            $('#postButton').click(function (e) {
+                e.preventDefault();
+
+                if (!$("#myForm").valid()) {
+                    return; // prevent ajax if client validation fails
+                }
+                var token = $('input[name="__RequestVerificationToken"]').val();
+                var formData = $("#myForm").serialize();
+                $.ajax({
+                    url: '/ClsInstances/CreateInstance',
+                    type: 'POST',
+                    data: formData,
+                    headers: {
+                        'RequestVerificationToken': token
+                    },
+                    dataType: "json",
+                    success: function (response) {
+                        if (response.success) {
+                            $("input[type='number'][data-formula='True']").each(function () {
+                                var key = $(this).attr("data-name");                                
+                                let value = response.frmdata.Properties.find(x => x.Name === key).Value;
+                                $('input[data-name=' + key + ']').val(value);
+                            });
+                            $("#saveData").removeAttr("disabled");
+                        } else {
+                            $(".text-danger").empty();
+                            $.each(response.errors, function (key, messages) {
+                                var errorMessage = messages.join(", ");
+                                // normalize: MVC uses dot, not [index]
+                                var cleanKey = key.replace(/\[\d+\]/g, "");
+                                $("[data-valmsg-for='" + cleanKey + "']").text(errorMessage);
+                            });
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        alert("AJAX error: " + error);
+                    }
+                });
+            });
+            $("#saveData").click(function () {
+                var formData = $("#myForm").serialize();
+                var token = $('input[name="__RequestVerificationToken"]').val();
+                $.ajax({
+                    url: '/ClsInstances/SaveInstanceData',
+                    type: 'POST',
+                    data: formData,
+                    headers: {
+                        'RequestVerificationToken': token
+                    },
+                    dataType: "json",
+                    success: function (response) {
+                        if (response.success) {
+                            alert(response.message);
+                            //$("#saveData").attr("disabled");
+                        } else {
+                            alert("Error: " + response.message);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        alert("AJAX error: " + error);
+                    }
+                });
+            });
+
+        });
+    </script>
+}

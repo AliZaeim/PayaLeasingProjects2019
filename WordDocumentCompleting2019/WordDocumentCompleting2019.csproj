@@ -390,6 +390,7 @@
     <Compile Include="Helpers\WordConverter.cs" />
     <Compile Include="Helpers\WordTemplateHelper.cs" />
     <Compile Include="Helpers\WordToHtmlConverter.cs" />
+    <Compile Include="Helpers\WordToHtmlConverterVer2.cs" />
     <Compile Include="Helpers\WordToPdfService.cs" />
     <Compile Include="Models\SalesLetterModel.cs" />
     <Compile Include="Models\SalesLetterService.cs" />

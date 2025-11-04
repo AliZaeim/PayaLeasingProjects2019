@@ -1,0 +1,190 @@
+﻿@model DynamicClassProject.Models.ViewModels.FormulaDefinitionViewModel
+@using DynamicClassProject.Utilities;
+@{
+    ViewBag.Title = "ثبت فرمول";
+    <style>
+        .myBold600{
+            font-weight: 600;
+        }
+    </style>
+}
+
+<h2 class="text-center alert alert-info">ثبت فرمول</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="container">
+        <div class="row">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="col-sm-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ClassName, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @*@Html.EditorFor(model => model.ClassName, new { htmlAttributes = new { @class = "form-control" } })*@
+                        <select id="clsName" name="ClassName" class="form-control">
+                            <option value="">نام کلاس را انتخاب کنید</option>
+                            @foreach (var item in Model.ClassNames)
+                            {
+                                (bool, string) Clsres = AppUtilities.GetClassDisplayText(item);
+                                <option value="@item">
+                                    @item
+                                    @if (Clsres.Item1 == true && Clsres.Item2 != null && Clsres.Item2 != string.Empty)
+                                    {
+                                        <text> ==> @Clsres.Item2</text>
+                                    }
+                                </option>
+                            }
+                        </select>
+                        @Html.ValidationMessageFor(model => model.ClassName, "", new { @class = "text-danger" })
+                    </div>
+
+                </div>
+
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.FieldName, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @*@Html.EditorFor(model => model.FieldName, new { htmlAttributes = new { @class = "form-control" } })*@
+                        <select id="filedNames" name="FieldName" class="form-control">
+                            <option value="">بعد از انتخاب نام کلاس، نام فیلد را انتخاب کنید</option>
+                        </select>
+                        @Html.ValidationMessageFor(model => model.FieldName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.FormulaText, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.FormulaText, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.FormulaText, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.FormulaName, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.FormulaName, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.FormulaName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.IsActive, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        <div class="checkbox">
+                            @Html.EditorFor(model => model.IsActive)
+                            @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-md-8">
+
+                    <input type="submit" value="ثبت" id="btnSave" class="btn btn-success col-md-8 mt-2" />
+                    @Html.ActionLink("بازگشت", "Index", "Formula", new { @class = "btn btn-danger mt-2 mb-3 col-md-8" })
+
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div id="NumericFields" style="height:auto">
+
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+    </div>
+}
+
+
+
+@section Scripts {
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#clsName").change(function () {
+                var N = $(this).val();
+                $.ajax({
+                    url: "/Formulas/GetNumericFieldsofClass",
+                    type: "GET",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: { className: N },
+                    success: function (result) {
+                        var dt = JSON.stringify(result);
+                        var frmData = result
+                            .filter(x => !x.Formula);
+                        console.log(frmData);
+                        $('#NumericFields').empty();
+                        $('#NumericFields').append('<p class="myBold600 text-danger">متغیرها : <p>');
+                        $.each(result.filter(x => x.Formula === false), function (index, ddd) {                           
+                            var p_html = '<p class="myBold600">' + ddd.Name + " | " + ddd.DisplayName + '</p>';
+                            $('#NumericFields').append($(p_html));
+                            $.ajax({
+                                url: "/Formulas/GetFormulaFieldsofClass",
+                                type: "GET",
+                                data: { className: N, applyDb: 1 },
+                                success: function (result) {
+                                    //console.log("result count: " + result.length);
+                                    $("#btnSave").removeAttr('disabled');
+                                    $("#btnSave").removeClass("btn-secondary");
+                                    $("#btnSave").addClass("btn-success");
+                                    $('#filedNames').empty();
+                                    if (result.length !== 0) {
+                                        $.each(result, function (index, item) {
+                                            $('#filedNames').append($('<option>', {
+                                                value: item.PropName,
+                                                text: item.PropDisplayName
+                                            }));
+                                        });
+                                    }
+                                    else {
+                                        $("#btnSave").attr("disabled", "disabled");
+                                        //.removeClass('current');
+                                        $("#btnSave").removeClass("btn-success");
+                                        $("#btnSave").addClass("btn-secondary");
+                                        $('#filedNames').append($('<option>', {
+                                            value: "",
+                                            text: "برای همه فیلدها فرمول نوشته شده است"
+                                        }));
+                                        $('#NumericFields').empty();
+                                        $('#NumericFields').append($('<p style="color:red;font-weight:600"> برای همه فیلدهایی که نیاز به فرمول دارند، فرمول نوشته شده است</p>'));
+                                    }
+
+                                },
+                                error: function () {
+                                    alert("Error");
+                                }
+                            });
+                        });
+                        $('#NumericFields').append('<p class="myBold600 text-danger">متغیرهای فرمولی : <p>');
+                        $.each(result.filter(x => x.Formula), function (index, ddd) {
+                            var p_html = '<p class="myBold600">' + ddd.Name + " | " + ddd.DisplayName + '</p>';
+                            $('#NumericFields').append($(p_html));
+                        });
+                    },
+                    error: function (xhr, status, error) {
+                        ('#NumericFields').empty();
+                        console.log("AJAX Error!");
+                        console.log("Status: " + status);  // e.g. "error", "timeout", "abort"
+                        console.log("Error: " + error);    // e.g. "Not Found"
+                        console.log("Response Text: " + xhr.responseText); // server response
+                    }
+                });
+
+            });
+        });
+    </script>
+}

@@ -1,0 +1,56 @@
+﻿@model DynamicClassProject.Models.Entities.Formula
+
+@{
+    ViewBag.Title = "حذف فرمول";
+}
+
+<h2 class="text-center alert alert-danger">حذف فرمول</h2>
+
+<h3>آیا مطمئن به حذف فرمول هستید؟</h3>
+<div>
+
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ClassName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ClassName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FieldName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FieldName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Expression)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Expression)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="حـــذف" class="btn btn-default" /> |
+            @Html.ActionLink("بازگشت", "Index")
+        </div>
+    }
+</div>

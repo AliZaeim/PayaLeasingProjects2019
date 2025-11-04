@@ -1,0 +1,142 @@
+﻿@model IEnumerable<LegalProject.Models.Entities.MainModel>
+
+@{
+    ViewBag.Title = "لیست دادها";
+}
+
+<h2 class="text-center alert alert-info">لیست داده ها</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table table-bordered" style="font-size:10px">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Family)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NationalId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ContractNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ChequeNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ChequeDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ChequeState)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PatitionDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ExecArchiveNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BranchCode)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ObtainFromBranch)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ReginProg)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TripleInquiry)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SeizureDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SeizureType)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ReturnOfComplaint)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Closed)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ClosedDate)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Id)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Family)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NationalId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ContractNumber)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ChequeNumber)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ChequeDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ChequeState)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PatitionDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ExecArchiveNumber)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BranchCode)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ObtainFromBranch)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ReginProg)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TripleInquiry)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SeizureDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SeizureType)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ReturnOfComplaint)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Closed)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ClosedDate)
+        </td>
+        <td>
+            @Html.ActionLink("ثبت اطلاعات", "CreateDetails", new { mainModelId = item.Id }, new { @class = "btn btn-primary w-100" }) 
+            @*@Html.ActionLink("Edit", "Edit", new { id=item.Id }) |*@
+            @Html.ActionLink("جزئیات", "MainModelDetails", new { id = item.Id }, new { @class = "btn btn-success mt-1 w-100" }) 
+            @*@Html.ActionLink("Delete", "Delete", new { id=item.Id })*@
+        </td>
+    </tr>
+}
+
+</table>

@@ -1,0 +1,18 @@
+﻿@model DynamicClassProject.Models.ViewModels.DynamicClassViewModel
+@{
+    ViewBag.Title = "Index";
+    
+}
+
+
+
+<h2>کلاس مورد نظر خود را انتخاب کنید</h2>
+
+@using (Html.BeginForm("Index", "ClsInstances", FormMethod.Post))
+{
+    
+    @Html.DropDownList("selectedClass", (SelectList)ViewBag.Classes, "-- انتخاب کلاس --")
+    <input type="submit" value="مرحله بعد" />
+}
+
+

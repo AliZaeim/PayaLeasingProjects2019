@@ -1,9 +1,0 @@
-﻿ClassInfo
-	1- Id
-	2- ClassName
-	3- ClassFaTitle
-ClassPropInfo
-	1- Id
-	2- PropName
-	3- PropFaTitle
-	4- PropFormula

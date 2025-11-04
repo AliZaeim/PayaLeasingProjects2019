@@ -1,0 +1,137 @@
+﻿@model DynamicClassProject.Models.Entities.Formula
+
+@{
+    ViewBag.Title = "ویرایش فرمول";
+}
+
+<h2 class="text-center alert alert-info">ویرایش فرمول</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="container">
+        <div class="row">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.Id)
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ClassName, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.ClassName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        @Html.ValidationMessageFor(model => model.ClassName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.FieldName, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.FieldName, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.FieldName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Expression, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.Expression, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Expression, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group col-md-8">
+                    <input type="submit" value="ویرایش" class="btn btn-info col-md-8 mt-2" />
+                    @Html.ActionLink("بازگشت", "Index", "Formula", new { @class = "btn btn-danger mt-2 mb-3 col-md-8" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div id="NumericFields" style="height:auto">
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+
+
+}
+
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            var N = $("#ClassName").val();
+            $.ajax({
+                url: "/Formulas/GetNumericFieldsofClass",
+                type: "GET",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: { className: N },
+                success: function (result) {
+                    var dt = JSON.stringify(result);
+                    console.log(dt);
+                    $('#NumericFields').empty();
+                    $('#NumericFields').append('<p">متغیرها : <p>');
+                    $.each(result, function (index, ddd) {
+                        console.log(ddd);
+                        $('#NumericFields').append($('<p>' + ddd.Name + " ===> " + ddd.DisplayName + '</p>'));
+                        $.ajax({
+                            url: "/Formulas/GetFormulaFieldsofClass",
+                            type: "GET",
+                            data: { className: N, applyDb: 1 },
+                            success: function (result) {
+                                //console.log("result count: " + result.length);
+                                $("#btnSave").removeAttr('disabled');
+                                $("#btnSave").removeClass("btn-secondary");
+                                $("#btnSave").addClass("btn-success");
+                                $('#filedNames').empty();
+                                if (result.length !== 0) {
+                                    $.each(result, function (index, item) {
+                                        $('#filedNames').append($('<option>', {
+                                            value: item.PropName,
+                                            text: item.PropDisplayName
+                                        }));
+                                    });
+                                }
+                                else {
+                                    $("#btnSave").attr("disabled", "disabled");
+                                    //.removeClass('current');
+                                    $("#btnSave").removeClass("btn-success");
+                                    $("#btnSave").addClass("btn-secondary");
+                                    $('#filedNames').append($('<option>', {
+                                        value: "",
+                                        text: "برای همه فیلدها فرمول نوشته شده است"
+                                    }));
+                                    $('#NumericFields').empty();
+                                    $('#NumericFields').append($('<p style="color:red;font-weight:600"> برای همه فیلدهایی که نیاز به فرمول دارند، فرمول نوشته شده است</p>'));
+                                }
+
+                            },
+                            error: function () {
+                                alert("Error");
+                            }
+                        });
+                    });
+                },
+                error: function (xhr, status, error) {
+                    ('#NumericFields').empty();
+                    console.log("AJAX Error!");
+                    console.log("Status: " + status);  // e.g. "error", "timeout", "abort"
+                    console.log("Error: " + error);    // e.g. "Not Found"
+                    console.log("Response Text: " + xhr.responseText); // server response
+                }
+            });
+        });
+    </script>
+} 

@@ -1,0 +1,57 @@
+﻿@model DynamicClassProject.Models.ViewModels.DynamicClassViewModel
+@{
+    ViewBag.Title = "نمونه سازی";
+    (bool, string) ClsInfo = DynamicClassProject.Utilities.AppUtilities.GetClassDisplayText(Model.SelectedClass);
+    DynamicClassProject.Models.Data.AppDbContext appDbContext = new DynamicClassProject.Models.Data.AppDbContext();
+}
+
+<h2 class="text-center alert alert-info">نمونه ساخته شده از کلاس @ClsInfo.Item2  </h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th class="text-center">ردیف</th>
+            <th class="text-center">نام</th>
+            <th class="text-center">عنوان</th>
+            <th class="text-center">فرمول دارد؟</th>
+            <th class="text-center">فرمول</th>
+            <th class="text-center">نوع</th>
+            <th class="text-center">مقدار</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @{ int radif = 1;}
+
+        @foreach (var item in Model.Properties)
+        {
+            string isFormula = "<span></span>";
+            <tr>
+                <td class="text-center">@radif</td>
+                <td class="text-center">@item.Name</td>
+                <td class="text-center">@item.DisplayName</td>
+                <td class="text-center">
+                    @if(item.IsFormula)
+                    {
+                    <span class="text-success">دارد</span>
+                    }
+                    else
+                    {
+                    <span class="text-danger">ندارد</span>
+
+                    }
+                </td>
+                <td class="text-center">
+                    @{ 
+                       string exp =  appDbContext.Formulas?.FirstOrDefault(f => f.FieldName == item.Name && f.ClassName == Model.SelectedClass)?.Expression;
+                    }
+                    <span>@exp</span>
+                </td>
+                <td class="text-center">@item.Type</td>
+                <td class="text-center">
+                    @item.Value
+                </td>
+            </tr>
+        radif++;
+    }
+    </tbody>
+</table>

@@ -1,0 +1,51 @@
+﻿@model IEnumerable<DynamicClassProject.Models.Entities.ClassInfo>
+
+@{
+    ViewBag.Title = "داده ها";
+}
+
+<h2 class="text-center alert alert-info">فرم های ذخیره شده</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ClassName)
+        </th>
+        <th>-</th>
+        <th>-</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.ClassName</td>
+            <td>
+                <table>
+                    <tbody>
+                        @foreach (var prop in item.ClassDatas)
+                        {
+                            <tr>
+                                <td class="text-center">@prop.FieldName</td>
+                                <td class="">@prop.FieldValue</td>
+                                <td>@prop.FieldFormula</td>
+                                <td>@prop.FieldType</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                
+            </td>
+
+
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+            </td>
+        </tr>
+    }
+
+</table>
